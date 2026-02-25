@@ -1,0 +1,335 @@
+import React, { useState } from "react";
+import { Link } from "react-router-dom"; 
+import { motion, AnimatePresence } from "framer-motion";
+import { 
+  MapPin, 
+  Mail, 
+  Phone, 
+  Instagram, 
+  Linkedin, 
+  Facebook, 
+  Youtube, 
+  ArrowRight,
+  X 
+} from "lucide-react";
+
+// --- SHARED CONTENT ---
+const sharedContent = (
+  <div className="space-y-4 text-slate-300 leading-relaxed text-sm">
+    <p>We believe that every business is unique, and so are its digital needs. That’s why we take a personalized approach to every project. Our process begins with understanding your business goals, target audience, and challenges. We then develop a customized strategy designed to deliver measurable results. Whether you are a startup seeking to build your online presence, a growing company aiming to optimize operations, or an established enterprise looking for digital transformation, IHO Digital provides scalable solutions tailored to your specific requirements.</p>
+    
+    <h4 className="text-white font-bold text-lg mt-4">Our Services</h4>
+    <ul className="list-disc pl-5 space-y-2">
+      <li><strong>Web & App Development:</strong> We create responsive, user-friendly websites and mobile applications designed to enhance user experience, boost engagement, and increase conversions.</li>
+      <li><strong>Digital Marketing:</strong> Our digital marketing strategies, including social media management, content marketing, SEO, and PPC campaigns, help brands grow, connect with audiences, and achieve tangible results.</li>
+      <li><strong>Branding & Design:</strong> We craft visually compelling brand identities that reflect your company’s vision and resonate with your audience.</li>
+      <li><strong>IT Solutions & Consulting:</strong> From cloud services to software solutions, we provide expert guidance and technical support to streamline your operations and improve efficiency.</li>
+    </ul>
+
+    <h4 className="text-white font-bold text-lg mt-4">Why Choose IHO Digital</h4>
+    <p>Customer satisfaction is the cornerstone of our business. We pride ourselves on delivering high-quality, reliable, and innovative solutions that drive real results. Our commitment to excellence, combined with transparency, integrity, and professionalism, ensures a seamless experience for our clients.</p>
+    <p>Innovation is at the heart of everything we do. We stay ahead of industry trends, leveraging the latest tools, technologies, and strategies to deliver forward-thinking solutions. Our team continuously refines its skills, ensuring that we provide solutions that are not only effective today but also future-ready.</p>
+
+    <h4 className="text-white font-bold text-lg mt-4">Our Mission & Vision</h4>
+    <p>Our mission is to empower businesses with the right digital solutions to unlock their full potential. We aim to create meaningful impact for our clients by enhancing their digital presence, increasing efficiency, and enabling growth. Our vision is to be a leading digital company recognized for innovation, excellence, and exceptional client service.</p>
+
+    <h4 className="text-white font-bold text-lg mt-4">Partner with Us</h4>
+    <p>At IHO Digital, we believe in building long-term partnerships based on trust, collaboration, and mutual growth. When you choose us, you’re not just hiring a digital service provider—you’re gaining a dedicated partner committed to your success. Let us help you navigate the digital world, transform your business, and achieve sustainable growth.</p>
+    <p>Experience the difference of working with a digital company that is passionate, innovative, and client-focused. With IHO Digital, your vision becomes reality, and the possibilities are limitless.</p>
+  </div>
+);
+
+// --- LEGAL CONTENT DATA ---
+const legalContent = {
+  terms: {
+    title: "Terms of Service",
+    text: sharedContent
+  },
+  privacy: {
+    title: "Privacy Policy",
+    text: sharedContent
+  },
+  cookies: {
+    title: "Cookie Policy",
+    text: sharedContent
+  },
+  help: {
+    title: "Help Center",
+    text: sharedContent
+  },
+  faq: {
+    title: "Frequently Asked Questions",
+    text: sharedContent
+  }
+};
+
+// --- NAVIGATION LINKS ---
+const footerLinks = [
+  { name: "Home", path: "/" },
+  { name: "About Us", path: "/about" },
+  { name: "Web Services", path: "/web-services" },
+  { name: "Digital Marketing", path: "/digital-marketing" },
+  { name: "Portfolio", path: "/portfolio" },
+  { name: "Blog", path: "/blog" }
+];
+
+// --- SOCIAL LINKS ---
+const socialLinks = [
+  {
+    icon: (
+        <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
+            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+        </svg>
+    ),
+    href: "https://x.com/isodigital21634",
+    color: "hover:bg-black border-white/20 hover:border-white"
+  },
+  { 
+    icon: <Facebook className="w-5 h-5" />, 
+    href: "https://www.facebook.com/profile.php?id=61585435236717", 
+    color: "hover:bg-blue-600" 
+  },
+  { 
+    icon: <Youtube className="w-5 h-5" />, 
+    href: "https://www.youtube.com/@ihodigital-p2p", 
+    color: "hover:bg-red-600" 
+  },
+  { 
+    icon: <Instagram className="w-5 h-5" />, 
+    href: "https://www.instagram.com/iho_digital/", 
+    color: "hover:bg-pink-600" 
+  },
+  { 
+    icon: <Linkedin className="w-5 h-5" />, 
+    href: "https://www.linkedin.com/in/ihodigital/", 
+    color: "hover:bg-blue-700" 
+  },
+];
+
+const Footer = () => {
+  const [activeModal, setActiveModal] = useState(null); 
+
+  return (
+    <footer className="relative bg-black pt-32 pb-10 overflow-hidden font-sans">
+      
+      {/* 1. 3D MOVING GRID FLOOR */}
+      <div className="absolute inset-0 pointer-events-none perspective-normal">
+        <motion.div
+            animate={{ backgroundPosition: ["0px 0px", "0px 100px"] }}
+            transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+            className="absolute inset-0 opacity-20"
+            style={{
+                backgroundImage: `linear-gradient(to right, #333 1px, transparent 1px), linear-gradient(to bottom, #333 1px, transparent 1px)`,
+                backgroundSize: "40px 40px",
+                transform: "rotateX(60deg) scale(2)",
+                transformOrigin: "top center",
+                maskImage: "linear-gradient(to bottom, transparent, black)"
+            }}
+        />
+        <div className="absolute top-0 left-0 w-full h-1/2 bg-gradient-to-b from-black via-black to-transparent z-10" />
+      </div>
+
+      {/* 2. GIANT BACKGROUND WATERMARK */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full text-center pointer-events-none select-none z-0">
+        <h1 className="text-[20vw] font-black text-white/3 leading-none tracking-tighter">
+            IHO
+        </h1>
+      </div>
+
+      <div className="relative max-w-7xl mx-auto px-6 z-20">
+        
+        {/* --- MAIN CONTENT GRID --- */}
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-12 mb-20">
+          
+          {/* BRAND COLUMN */}
+          <div className="md:col-span-5">
+            <motion.div 
+                initial={{ opacity: 0, x: -50 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.8 }}
+            >
+                {/* REPLACED TEXT WITH LOGO */}
+                <Link to="/" onClick={() => window.scrollTo(0,0)} className="block mb-6">
+                    <img 
+                      src="/img/logo.png" 
+                      alt="IHO Digital" 
+                      className="h-40 w-auto object-contain" 
+                    />
+                </Link>
+
+                <p className="text-gray-400 text-lg leading-relaxed max-w-md mb-8">
+                    Empowering ambitious businesses with high-performance technology and data-driven marketing strategies.
+                </p>
+
+                {/* HOLOGRAPHIC SOCIAL ORBS */}
+                <div className="flex gap-4">
+                    {socialLinks.map((social, i) => (
+                        <motion.a
+                            key={i}
+                            href={social.href}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            whileHover={{ y: -5, scale: 1.1 }}
+                            className={`w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white transition-all duration-300 ${social.color} hover:border-transparent hover:shadow-[0_0_20px_rgba(255,255,255,0.3)] backdrop-blur-md group`}
+                        >
+                            <span className="relative z-10">{social.icon}</span>
+                            <div className="absolute inset-0 rounded-full bg-white/20 blur-md opacity-0 group-hover:opacity-100 transition-opacity" />
+                        </motion.a>
+                    ))}
+                </div>
+            </motion.div>
+          </div>
+
+          {/* NAVIGATION COLUMN */}
+          <div className="md:col-span-3">
+            <h3 className="text-white font-bold text-xl mb-8 flex items-center gap-2">
+                <span className="w-8 h-0.5 bg-gradient-to-r from-purple-500 to-transparent" />
+                Explore
+            </h3>
+            <ul className="space-y-4">
+                {footerLinks.map((item, i) => (
+                    <motion.li 
+                        key={i}
+                        initial={{ opacity: 0, x: -20 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        transition={{ delay: i * 0.1 }}
+                    >
+                        <Link 
+                            to={item.path} 
+                            onClick={() => window.scrollTo(0,0)} 
+                            className="group flex items-center gap-2 text-gray-400 hover:text-white transition-colors"
+                        >
+                            <ArrowRight className="w-4 h-4 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 text-cyan-400" />
+                            <span className="group-hover:translate-x-2 transition-transform duration-300">
+                                {item.name}
+                            </span>
+                        </Link>
+                    </motion.li>
+                ))}
+            </ul>
+          </div>
+
+          {/* CONTACT COLUMN */}
+          <div className="md:col-span-4">
+              <h3 className="text-white font-bold text-xl mb-8 flex items-center gap-2">
+                <span className="w-8 h-0.5 bg-gradient-to-r from-blue-500 to-transparent" />
+                Get In Touch
+            </h3>
+            
+            <div className="space-y-6 mb-8">
+                {/* Address */}
+                <div className="flex items-start gap-4 text-gray-400">
+                    <div className="p-2 bg-white/5 rounded-lg text-blue-400">
+                        <MapPin className="w-5 h-5" />
+                    </div>
+                    <div>
+                        <p className="text-white font-medium">Headquarters</p>
+                        <p className="text-sm mt-1 leading-relaxed">
+                          402, 4th Floor, H-47 Sector-63 RD,<br />
+                          H Block, Noida-201309
+                        </p>
+                    </div>
+                </div>
+                
+                {/* Phone */}
+                <div className="flex items-start gap-4 text-gray-400">
+                    <div className="p-2 bg-white/5 rounded-lg text-blue-400">
+                        <Phone className="w-5 h-5" />
+                    </div>
+                    <div>
+                        <p className="text-white font-medium">Phone</p>
+                        <a href="https://wa.me/917678592968" target="_blank" rel="noopener noreferrer" className="text-sm mt-1 hover:text-cyan-400 cursor-pointer transition-colors block">
+                          +91-7678592968
+                        </a>
+                    </div>
+                </div>
+
+                {/* Email */}
+                <div className="flex items-start gap-4 text-gray-400">
+                      <div className="p-2 bg-white/5 rounded-lg text-blue-400">
+                        <Mail className="w-5 h-5" />
+                    </div>
+                    <div>
+                        <p className="text-white font-medium">Email Us</p>
+                        <a href="mailto:ihodigital.com@gmail.com" className="text-sm mt-1 hover:text-cyan-400 cursor-pointer transition-colors block">
+                          ihodigital.com@gmail.com
+                        </a>
+                    </div>
+                </div>
+            </div>
+          </div>
+        </div>
+
+        {/* --- COPYRIGHT BAR (MODAL TRIGGERS) --- */}
+        <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-white">
+            <p>© 2024 IHO Digital. Built for the future.</p>
+            <div className="flex flex-wrap justify-center gap-6 text-gray-400">
+                <button onClick={() => setActiveModal('privacy')} className="hover:text-white transition-colors">Privacy Policy</button>
+                <button onClick={() => setActiveModal('cookies')} className="hover:text-white transition-colors">Cookies</button>
+                <button onClick={() => setActiveModal('help')} className="hover:text-white transition-colors">Help</button>
+                <button onClick={() => setActiveModal('faq')} className="hover:text-white transition-colors">FAQ</button>
+            </div>
+        </div>
+
+      </div>
+
+      {/* --- LEGAL MODAL POPUP --- */}
+      <AnimatePresence>
+        {activeModal && (
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+             {/* Backdrop */}
+             <motion.div 
+                initial={{ opacity: 0 }} 
+                animate={{ opacity: 1 }} 
+                exit={{ opacity: 0 }} 
+                onClick={() => setActiveModal(null)}
+                className="absolute inset-0 bg-black/80 backdrop-blur-sm"
+             />
+             
+             {/* Modal Content */}
+             <motion.div 
+                initial={{ scale: 0.9, opacity: 0, y: 20 }}
+                animate={{ scale: 1, opacity: 1, y: 0 }}
+                exit={{ scale: 0.9, opacity: 0, y: 20 }}
+                className="relative w-full max-w-2xl bg-slate-900 border border-white/10 rounded-2xl shadow-2xl overflow-hidden"
+             >
+                <div className="flex justify-between items-center p-6 border-b border-white/10 bg-white/5">
+                   <h3 className="text-xl font-bold text-white">{legalContent[activeModal].title}</h3>
+                   <button onClick={() => setActiveModal(null)} className="text-slate-400 hover:text-white transition-colors">
+                      <X size={24} />
+                   </button>
+                </div>
+                <div className="p-8 max-h-[60vh] overflow-y-auto custom-scrollbar">
+                   {legalContent[activeModal].text}
+                </div>
+                <div className="p-6 border-t border-white/10 bg-white/5 text-right">
+                   <button 
+                      onClick={() => setActiveModal(null)}
+                      className="px-6 py-2 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-lg transition-colors"
+                   >
+                      Close
+                   </button>
+                </div>
+             </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* --- FLOATING WHATSAPP BUTTON --- */}
+      <a
+        href="https://wa.me/917678592968"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="fixed bottom-6 right-6 z-[999] w-14 h-14 bg-green-500 hover:bg-green-600 text-white rounded-full shadow-lg flex items-center justify-center transition-transform hover:scale-110 animate-bounce-slow"
+        aria-label="Chat on WhatsApp"
+      >
+        <svg viewBox="0 0 24 24" fill="currentColor" className="w-8 h-8">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+        </svg>
+      </a>
+
+    </footer>
+  );
+};
+
+export default Footer;

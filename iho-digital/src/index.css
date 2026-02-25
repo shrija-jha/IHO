@@ -1,0 +1,107 @@
+@import "tailwindcss";
+
+/* --- GLOBAL RESPONSIVE FIXES --- */
+html, body {
+  /* This prevents the site from shrinking below readable mobile size */
+  min-width: 320px !important; 
+  width: 100%;
+  overflow-x: hidden; /* Prevents side-scrolling */
+  margin: 0;
+  padding: 0;
+  touch-action: manipulation;
+}
+
+#root {
+  min-width: 320px; /* Enforces min-width on React root */
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+/* --- ANIMATIONS --- */
+@keyframes blob {
+  0% { transform: translate(0px, 0px) scale(1); }
+  33% { transform: translate(30px, -50px) scale(1.1); }
+  66% { transform: translate(-20px, 20px) scale(0.9); }
+  100% { transform: translate(0px, 0px) scale(1); }
+}
+
+.animate-blob {
+  animation: blob 7s infinite;
+}
+
+.animation-delay-2000 {
+  animation-delay: 2s;
+}
+
+.animation-delay-4000 {
+  animation-delay: 4s;
+}
+
+.text-gradient-gold {
+  background: linear-gradient(to right, #fbbf24, #d97706);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+@layer utilities {
+  @keyframes shine {
+    0% { background-position: 200% center; }
+    100% { background-position: 0% center; }
+  }
+  
+  @keyframes shimmer {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+  }
+}
+
+.bg-shine {
+  background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.4) 50%, rgba(255,255,255,0) 100%);
+  background-size: 200% auto;
+  animation: shine 2s linear infinite;
+}
+
+@theme {
+  --animate-gradient-x: gradient-x 3s ease infinite;
+
+  @keyframes gradient-x {
+    0%, 100% {
+      background-size: 200% 200%;
+      background-position: left center;
+    }
+    50% {
+      background-size: 200% 200%;
+      background-position: right center;
+    }
+  }
+}
+
+/* Responsive Utilities */
+.container {
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.mobile-hidden { display: none; }
+@media (min-width: 768px) {
+  .mobile-hidden { display: block; }
+}
+.desktop-hidden { display: block; }
+@media (min-width: 768px) {
+  .desktop-hidden { display: none; }
+}
+
+/* Custom scrollbar hide utility for horizontal dropdowns */
+.scrollbar-hide {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;  /* Chrome, Safari and Opera */
+}
