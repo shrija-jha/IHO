@@ -63,19 +63,38 @@ const MegaMenu = ({ items, prefix, queryParam, closeMenu }) => {
 
 // --- COMPONENT: CONTACT MODAL (GET QUOTE) ---
 const ContactModal = ({ isOpen, onClose, onToast }) => {
-  const [formData, setFormData] = useState({ name: '', email: '', service: 'Web Development', message: '' });
+  // Removed 'service' from state
+  const [formData, setFormData] = useState({ name: '', email: '', message: '' });
   const [isSending, setIsSending] = useState(false);
   const [status, setStatus] = useState('idle'); // idle | success | error
 
-  const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    
+    // Strict Validation for Name: Only Alphabets and Spaces allowed
+    if (name === 'name') {
+      const alphabetOnly = value.replace(/[^a-zA-Z\s]/g, '');
+      setFormData({ ...formData, [name]: alphabetOnly });
+    } else {
+      setFormData({ ...formData, [name]: value });
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSending(true);
     setStatus('idle');
 
+    // Strict Validation for Email format before submitting
+    const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+    if (!emailPattern.test(formData.email)) {
+        if (onToast) onToast({ type: 'error', message: 'Please enter a valid email address.' });
+        setIsSending(false);
+        return;
+    }
+
     try {
-      // AJAX Request to FormSubmit Backend with your email
+      // AJAX Request to FormSubmit Backend
       const response = await fetch("https://formsubmit.co/ajax/info@ihodigital.com", {
         method: "POST",
         headers: { 
@@ -85,9 +104,8 @@ const ContactModal = ({ isOpen, onClose, onToast }) => {
         body: JSON.stringify({
             name: formData.name,
             email: formData.email,
-            service: formData.service,
             message: formData.message,
-            _subject: `Get Quote Request: ${formData.service} - ${formData.name}`, 
+            _subject: `Get Quote Request: ${formData.name}`, // Removed service from subject line
             _template: "table", 
             _captcha: "false" 
         })
@@ -106,7 +124,7 @@ const ContactModal = ({ isOpen, onClose, onToast }) => {
       // Reload Page after 5 seconds to reset state
       setTimeout(() => {
         setStatus('idle');
-        setFormData({ name: '', email: '', service: 'Web Development', message: '' });
+        setFormData({ name: '', email: '', message: '' }); // Reset without service
         onClose();
         window.location.reload(); 
       }, 5000);
@@ -169,7 +187,7 @@ const ContactModal = ({ isOpen, onClose, onToast }) => {
                                 value={formData.name} 
                                 required 
                                 onChange={handleChange} 
-                                placeholder="Name" 
+                                placeholder="Name (Alphabets only)" 
                                 className="w-full bg-black border border-white/10 rounded-lg py-3 pl-10 text-white focus:border-blue-500 outline-none transition-colors placeholder:text-slate-600" 
                             />
                         </div>
@@ -187,20 +205,7 @@ const ContactModal = ({ isOpen, onClose, onToast }) => {
                             />
                         </div>
                         
-                        <div className="relative group">
-                            <Briefcase className="absolute left-3 top-3.5 text-slate-500 w-4 h-4 group-focus-within:text-blue-500 transition-colors" />
-                            <select 
-                                name="service" 
-                                value={formData.service} 
-                                onChange={handleChange} 
-                                className="w-full bg-black border border-white/10 rounded-lg py-3 pl-10 text-slate-300 focus:border-blue-500 outline-none appearance-none transition-colors cursor-pointer"
-                            >
-                                <option>Web Development</option>
-                                <option>Digital Marketing</option>
-                                <option>SEO</option>
-                                <option>App Dev</option>
-                            </select>
-                        </div>
+                        {/* Service dropdown block completely removed from here */}
                         
                         <div className="relative group">
                             <MessageSquare className="absolute left-3 top-3.5 text-slate-500 w-4 h-4 group-focus-within:text-blue-500 transition-colors" />
@@ -281,7 +286,6 @@ const Navbar = () => {
     }
   };
 
-  // Helper to trigger toast from children
   const handleToast = (newToast) => {
     setToast(newToast);
     setTimeout(() => setToast({ type: null, message: '' }), 3500);

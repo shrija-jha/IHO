@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom"; 
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { 
   MapPin, 
   Mail, 
@@ -9,59 +9,8 @@ import {
   Linkedin, 
   Facebook, 
   Youtube, 
-  ArrowRight,
-  X 
+  ArrowRight
 } from "lucide-react";
-
-// --- SHARED CONTENT ---
-const sharedContent = (
-  <div className="space-y-4 text-slate-300 leading-relaxed text-sm">
-    <p>We believe that every business is unique, and so are its digital needs. That’s why we take a personalized approach to every project. Our process begins with understanding your business goals, target audience, and challenges. We then develop a customized strategy designed to deliver measurable results. Whether you are a startup seeking to build your online presence, a growing company aiming to optimize operations, or an established enterprise looking for digital transformation, IHO Digital provides scalable solutions tailored to your specific requirements.</p>
-    
-    <h4 className="text-white font-bold text-lg mt-4">Our Services</h4>
-    <ul className="list-disc pl-5 space-y-2">
-      <li><strong>Web & App Development:</strong> We create responsive, user-friendly websites and mobile applications designed to enhance user experience, boost engagement, and increase conversions.</li>
-      <li><strong>Digital Marketing:</strong> Our digital marketing strategies, including social media management, content marketing, SEO, and PPC campaigns, help brands grow, connect with audiences, and achieve tangible results.</li>
-      <li><strong>Branding & Design:</strong> We craft visually compelling brand identities that reflect your company’s vision and resonate with your audience.</li>
-      <li><strong>IT Solutions & Consulting:</strong> From cloud services to software solutions, we provide expert guidance and technical support to streamline your operations and improve efficiency.</li>
-    </ul>
-
-    <h4 className="text-white font-bold text-lg mt-4">Why Choose IHO Digital</h4>
-    <p>Customer satisfaction is the cornerstone of our business. We pride ourselves on delivering high-quality, reliable, and innovative solutions that drive real results. Our commitment to excellence, combined with transparency, integrity, and professionalism, ensures a seamless experience for our clients.</p>
-    <p>Innovation is at the heart of everything we do. We stay ahead of industry trends, leveraging the latest tools, technologies, and strategies to deliver forward-thinking solutions. Our team continuously refines its skills, ensuring that we provide solutions that are not only effective today but also future-ready.</p>
-
-    <h4 className="text-white font-bold text-lg mt-4">Our Mission & Vision</h4>
-    <p>Our mission is to empower businesses with the right digital solutions to unlock their full potential. We aim to create meaningful impact for our clients by enhancing their digital presence, increasing efficiency, and enabling growth. Our vision is to be a leading digital company recognized for innovation, excellence, and exceptional client service.</p>
-
-    <h4 className="text-white font-bold text-lg mt-4">Partner with Us</h4>
-    <p>At IHO Digital, we believe in building long-term partnerships based on trust, collaboration, and mutual growth. When you choose us, you’re not just hiring a digital service provider—you’re gaining a dedicated partner committed to your success. Let us help you navigate the digital world, transform your business, and achieve sustainable growth.</p>
-    <p>Experience the difference of working with a digital company that is passionate, innovative, and client-focused. With IHO Digital, your vision becomes reality, and the possibilities are limitless.</p>
-  </div>
-);
-
-// --- LEGAL CONTENT DATA ---
-const legalContent = {
-  terms: {
-    title: "Terms of Service",
-    text: sharedContent
-  },
-  privacy: {
-    title: "Privacy Policy",
-    text: sharedContent
-  },
-  cookies: {
-    title: "Cookie Policy",
-    text: sharedContent
-  },
-  help: {
-    title: "Help Center",
-    text: sharedContent
-  },
-  faq: {
-    title: "Frequently Asked Questions",
-    text: sharedContent
-  }
-};
 
 // --- NAVIGATION LINKS ---
 const footerLinks = [
@@ -107,8 +56,6 @@ const socialLinks = [
 ];
 
 const Footer = () => {
-  const [activeModal, setActiveModal] = useState(null); 
-
   return (
     <footer className="relative bg-black pt-32 pb-10 overflow-hidden font-sans">
       
@@ -148,7 +95,6 @@ const Footer = () => {
                 whileInView={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.8 }}
             >
-                {/* REPLACED TEXT WITH LOGO */}
                 <Link to="/" onClick={() => window.scrollTo(0,0)} className="block mb-6">
                     <img 
                       src="/img/logo.png" 
@@ -251,8 +197,8 @@ const Footer = () => {
                     </div>
                     <div>
                         <p className="text-white font-medium">Email Us</p>
-                        <a href="mailto:ihodigital.com@gmail.com" className="text-sm mt-1 hover:text-cyan-400 cursor-pointer transition-colors block">
-                          ihodigital.com@gmail.com
+                        <a href="mailto:info@ihodigital.com" className="text-sm mt-1 hover:text-cyan-400 cursor-pointer transition-colors block">
+                          info@ihodigital.com
                         </a>
                     </div>
                 </div>
@@ -260,60 +206,19 @@ const Footer = () => {
           </div>
         </div>
 
-        {/* --- COPYRIGHT BAR (MODAL TRIGGERS) --- */}
+        {/* --- COPYRIGHT BAR (REAL LINKS NOW) --- */}
         <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-white">
             <p>© 2024 IHO Digital. Built for the future.</p>
             <div className="flex flex-wrap justify-center gap-6 text-gray-400">
-                <button onClick={() => setActiveModal('privacy')} className="hover:text-white transition-colors">Privacy Policy</button>
-                <button onClick={() => setActiveModal('cookies')} className="hover:text-white transition-colors">Cookies</button>
-                <button onClick={() => setActiveModal('help')} className="hover:text-white transition-colors">Help</button>
-                <button onClick={() => setActiveModal('faq')} className="hover:text-white transition-colors">FAQ</button>
+                <Link to="/legal/privacy" className="hover:text-white transition-colors">Privacy Policy</Link>
+                <Link to="/legal/terms" className="hover:text-white transition-colors">Terms of Service</Link>
+                <Link to="/legal/cookies" className="hover:text-white transition-colors">Cookies</Link>
+                <Link to="/legal/help" className="hover:text-white transition-colors">Help</Link>
+                <Link to="/legal/faq" className="hover:text-white transition-colors">FAQ</Link>
             </div>
         </div>
 
       </div>
-
-      {/* --- LEGAL MODAL POPUP --- */}
-      <AnimatePresence>
-        {activeModal && (
-          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
-             {/* Backdrop */}
-             <motion.div 
-                initial={{ opacity: 0 }} 
-                animate={{ opacity: 1 }} 
-                exit={{ opacity: 0 }} 
-                onClick={() => setActiveModal(null)}
-                className="absolute inset-0 bg-black/80 backdrop-blur-sm"
-             />
-             
-             {/* Modal Content */}
-             <motion.div 
-                initial={{ scale: 0.9, opacity: 0, y: 20 }}
-                animate={{ scale: 1, opacity: 1, y: 0 }}
-                exit={{ scale: 0.9, opacity: 0, y: 20 }}
-                className="relative w-full max-w-2xl bg-slate-900 border border-white/10 rounded-2xl shadow-2xl overflow-hidden"
-             >
-                <div className="flex justify-between items-center p-6 border-b border-white/10 bg-white/5">
-                   <h3 className="text-xl font-bold text-white">{legalContent[activeModal].title}</h3>
-                   <button onClick={() => setActiveModal(null)} className="text-slate-400 hover:text-white transition-colors">
-                      <X size={24} />
-                   </button>
-                </div>
-                <div className="p-8 max-h-[60vh] overflow-y-auto custom-scrollbar">
-                   {legalContent[activeModal].text}
-                </div>
-                <div className="p-6 border-t border-white/10 bg-white/5 text-right">
-                   <button 
-                      onClick={() => setActiveModal(null)}
-                      className="px-6 py-2 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-lg transition-colors"
-                   >
-                      Close
-                   </button>
-                </div>
-             </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
 
       {/* --- FLOATING WHATSAPP BUTTON --- */}
       <a

@@ -1,163 +1,27 @@
-﻿import React, { useEffect, useRef, useState, useMemo } from 'react';
+import React, { useEffect, useRef, useState, useMemo } from 'react';
 import SEO from "../../components/SEO.jsx";
-import { useParams, Link, useLocation, Navigate } from 'react-router-dom';
-import { motion, useMotionValue, useSpring, useTransform, AnimatePresence } from 'framer-motion';
+import { Link } from 'react-router-dom';
+import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { 
   ChevronRight, CheckCircle2, 
-  Rocket, Home, Layers, ArrowRight, Mail as MailIcon,
-  X
+  Rocket, Home, Layers, ArrowRight, Mail as MailIcon
 } from 'lucide-react';
-
-// --- IMPORT DATA ---
-import { industriesData } from "../../Data/industriesData";
-import { seoData } from "../../Data/seoData";
+import { Building2 } from 'lucide-react';
 
 // --- 1. THEME PALETTE ---
 const themePalette = {
-  blue: { 
-    gradient: "from-blue-950 via-slate-900 to-black", 
-    accent: "bg-blue-600", 
-    text: "text-blue-400", 
-    border: "border-blue-500/30",
-    glow: "bg-blue-500/20",
-    hex: "#3b82f6",
-    titleGradient: "from-blue-300 via-blue-500 to-cyan-400"
-  },
-  purple: { 
-    gradient: "from-purple-950 via-slate-900 to-black", 
-    accent: "bg-purple-600", 
-    text: "text-purple-400", 
-    border: "border-purple-500/30",
-    glow: "bg-purple-500/20",
-    hex: "#a855f7",
-    titleGradient: "from-purple-300 via-purple-500 to-pink-400"
-  },
-  emerald: { 
-    gradient: "from-emerald-950 via-slate-900 to-black", 
-    accent: "bg-emerald-600", 
-    text: "text-emerald-400", 
-    border: "border-emerald-500/30",
-    glow: "bg-emerald-500/20",
-    hex: "#10b981",
-    titleGradient: "from-emerald-300 via-emerald-500 to-teal-400"
-  },
-  orange: { 
-    gradient: "from-orange-950 via-slate-900 to-black", 
-    accent: "bg-orange-600", 
-    text: "text-orange-400", 
-    border: "border-orange-500/30",
-    glow: "bg-orange-500/20",
-    hex: "#f97316",
-    titleGradient: "from-orange-300 via-orange-500 to-amber-400"
-  },
-  pink: { 
-    gradient: "from-pink-950 via-slate-900 to-black", 
-    accent: "bg-pink-600", 
-    text: "text-pink-400", 
-    border: "border-pink-500/30",
-    glow: "bg-pink-500/20",
-    hex: "#ec4899",
-    titleGradient: "from-pink-300 via-pink-500 to-rose-400"
-  },
-  cyan: { 
-    gradient: "from-cyan-950 via-slate-900 to-black", 
-    accent: "bg-cyan-600", 
-    text: "text-cyan-400", 
-    border: "border-cyan-500/30",
-    glow: "bg-cyan-500/20",
-    hex: "#06b6d4",
-    titleGradient: "from-cyan-300 via-cyan-500 to-blue-400"
-  },
-  indigo: { 
-    gradient: "from-indigo-950 via-slate-900 to-black", 
-    accent: "bg-indigo-600", 
-    text: "text-indigo-400", 
-    border: "border-indigo-500/30",
-    glow: "bg-indigo-500/20",
-    hex: "#6366f1",
-    titleGradient: "from-indigo-300 via-indigo-500 to-purple-400"
-  },
-  green: { 
-    gradient: "from-green-950 via-slate-900 to-black", 
-    accent: "bg-green-600", 
-    text: "text-green-400", 
-    border: "border-green-500/30",
-    glow: "bg-green-500/20",
-    hex: "#22c55e",
-    titleGradient: "from-green-300 via-green-500 to-emerald-400"
-  },
-  red: { 
-    gradient: "from-red-950 via-slate-900 to-black", 
-    accent: "bg-red-600", 
-    text: "text-red-400", 
-    border: "border-red-500/30",
-    glow: "bg-red-500/20",
-    hex: "#ef4444",
-    titleGradient: "from-red-300 via-red-500 to-orange-400"
-  },
-  yellow: { 
-    gradient: "from-yellow-950 via-slate-900 to-black", 
-    accent: "bg-yellow-600", 
-    text: "text-yellow-400", 
-    border: "border-yellow-500/30",
-    glow: "bg-yellow-500/20",
-    hex: "#eab308",
-    titleGradient: "from-yellow-300 via-yellow-500 to-amber-400"
-  },
-  rose: { 
-    gradient: "from-rose-950 via-slate-900 to-black", 
-    accent: "bg-rose-600", 
-    text: "text-rose-400", 
-    border: "border-rose-500/30",
-    glow: "bg-rose-500/20",
-    hex: "#f43f5e",
-    titleGradient: "from-rose-300 via-rose-500 to-pink-400"
-  },
-  fuchsia: { 
-    gradient: "from-fuchsia-950 via-slate-900 to-black", 
-    accent: "bg-fuchsia-600", 
-    text: "text-fuchsia-400", 
-    border: "border-fuchsia-500/30",
-    glow: "bg-fuchsia-500/20",
-    hex: "#d946ef",
-    titleGradient: "from-fuchsia-300 via-fuchsia-500 to-purple-400"
-  },
-  teal: { 
-    gradient: "from-teal-950 via-slate-900 to-black", 
-    accent: "bg-teal-600", 
-    text: "text-teal-400", 
-    border: "border-teal-500/30",
-    glow: "bg-teal-500/20",
-    hex: "#14b8a6",
-    titleGradient: "from-teal-300 via-teal-500 to-cyan-400"
-  },
-  sky: { 
-    gradient: "from-sky-950 via-slate-900 to-black", 
-    accent: "bg-sky-600", 
-    text: "text-sky-400", 
-    border: "border-sky-500/30",
-    glow: "bg-sky-500/20",
-    hex: "#0ea5e9",
-    titleGradient: "from-sky-300 via-sky-500 to-blue-400"
+  amber: { 
+    gradient: "from-amber-950 via-slate-900 to-black", 
+    accent: "bg-amber-600", 
+    text: "text-amber-400", 
+    border: "border-amber-500/30",
+    glow: "bg-amber-500/20",
+    hex: "#f59e0b",
+    titleGradient: "from-amber-300 via-amber-500 to-orange-400"
   }
 };
 
-const getTheme = (serviceId, definedColor) => {
-  if (definedColor && themePalette[definedColor]) return themePalette[definedColor];
-  const keys = Object.keys(themePalette);
-  const sum = serviceId.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
-  return themePalette[keys[sum % keys.length]];
-};
-
-const WEB_SERVICES_BASE = '/web-services';
-const DIGITAL_MARKETING_BASE = '/digital-marketing';
-
-const getServiceBasePath = (service) => {
-  const category = service?.category || "";
-  return category.toLowerCase().includes('digital')
-    ? DIGITAL_MARKETING_BASE
-    : WEB_SERVICES_BASE;
-};
+const theme = themePalette.amber;
 
 // --- 2. TILT HEADING COMPONENT ---
 const TiltHeading = ({ text, theme }) => {
@@ -190,7 +54,6 @@ const TiltHeading = ({ text, theme }) => {
       >
         {text}
       </motion.h2>
-      {/* Enhanced glow effect for the title */}
       <div className={`absolute inset-0 ${theme.glow} blur-[120px] opacity-60 -z-10 animate-pulse`} />
       <div className={`absolute inset-0 ${theme.glow} blur-[200px] opacity-30 -z-20`} />
     </motion.div>
@@ -201,14 +64,9 @@ const TiltHeading = ({ text, theme }) => {
 const ContentParser = ({ blocks, theme }) => {
   if (!blocks || blocks.length === 0) return null;
 
-  // Helper function to detect if a line is a short feature heading
   const isShortFeatureHeading = (line, nextLine) => {
     const trimmed = line.trim();
     const words = trimmed.split(/\s+/);
-    
-    // STRICT FIX: Limit to 3 words max to prevent normal sentences from becoming cards.
-    // "Static websites are perfect for" is 5 words -> will NOT be a card.
-    // Also exclude simple list items that appear after section headings
     if (
       words.length >= 1 && 
       words.length <= 3 && 
@@ -220,7 +78,6 @@ const ContentParser = ({ blocks, theme }) => {
       nextLine && 
       nextLine.trim().length > 0 &&
       !nextLine.trim().startsWith('-') &&
-      // If next line is also short without punctuation, it's likely a list, not a feature
       !(nextLine.trim().split(/\s+/).length <= 5 && !nextLine.trim().endsWith('.'))
     ) {
       return true;
@@ -228,11 +85,8 @@ const ContentParser = ({ blocks, theme }) => {
     return false;
   };
 
-  // Helper to detect if lines after a heading are simple list items
   const isSimpleListSequence = (lines, startIndex) => {
     if (startIndex >= lines.length) return false;
-    
-    // Check if next 2-3 lines are short (1-6 words) without ending punctuation
     let listItemCount = 0;
     for (let i = startIndex; i < Math.min(startIndex + 5, lines.length); i++) {
       const line = lines[i].trim();
@@ -243,24 +97,20 @@ const ContentParser = ({ blocks, theme }) => {
         break;
       }
     }
-    return listItemCount >= 2; // At least 2 consecutive short items = list
+    return listItemCount >= 2;
   };
 
-  // Helper function to detect if a line is a section heading (? or :)
   const isSectionHeading = (line) => {
     const trimmed = line.trim();
     return trimmed.endsWith('?') || trimmed.endsWith(':');
   };
 
-  // Helper function to detect if a line is a company/service subheading (first subheading)
   const isCompanySubheading = (line, isFirstInBlock) => {
     const trimmed = line.trim();
     const words = trimmed.split(/\s+/);
-    // Detect patterns like "Static Website Development Company â€“ IHO Digital"
-    // This should be the first line of the first block typically
     if (
       isFirstInBlock &&
-      (trimmed.includes('â€“ IHO Digital') || 
+      (trimmed.includes('– IHO Digital') || 
        trimmed.includes('- IHO Digital') ||
        (trimmed.includes('Company') && words.length < 20 && !trimmed.endsWith('.')) ||
        (trimmed.includes('Services') && words.length < 20 && !trimmed.endsWith('.')) ||
@@ -271,16 +121,13 @@ const ContentParser = ({ blocks, theme }) => {
     return false;
   };
 
-  // Process blocks to create feature cards and sections
   const processedBlocks = [];
   blocks.forEach((block, blockIndex) => {
-    // Check if block contains bullet points
-    if (block.includes('â€¢') || block.trim().startsWith('-')) {
+    if (block.includes('•') || block.trim().startsWith('-')) {
       processedBlocks.push({ type: 'bullets', content: block });
       return;
     }
 
-    // Split block by lines
     const lines = block.split('\n').filter(line => line.trim().length > 0);
     let i = 0;
     
@@ -289,17 +136,13 @@ const ContentParser = ({ blocks, theme }) => {
       const nextLine = i < lines.length - 1 ? lines[i + 1].trim() : null;
       const isFirstLine = blockIndex === 0 && i === 0;
       
-      // Check if it's a company/service subheading (first line typically)
       if (isCompanySubheading(line, isFirstLine)) {
         processedBlocks.push({ type: 'company_subheading', content: line });
         i++;
       }
-      // Check if it's a section heading (? or :) followed by list items
       else if (isSectionHeading(line)) {
-        // Check if this heading is followed by simple list items
         if (isSimpleListSequence(lines, i + 1)) {
-          // Collect all list items
-          const listItems = [line]; // Include heading
+          const listItems = [line];
           i++;
           while (i < lines.length) {
             const itemLine = lines[i].trim();
@@ -317,23 +160,17 @@ const ContentParser = ({ blocks, theme }) => {
           i++;
         }
       }
-      // Check if it's a short feature heading with content
       else if (isShortFeatureHeading(line, nextLine)) {
-        // This is a feature heading, next line is its content
         processedBlocks.push({ 
           type: 'feature_card', 
           heading: line,
           content: nextLine
         });
-        i += 2; // Skip both heading and content line
+        i += 2;
       }
-      // Regular paragraph
       else {
-        // MERGING LOGIC: Check if the previous item was a paragraph.
-        // If so, append this line to it instead of making a new paragraph.
         const lastItem = processedBlocks[processedBlocks.length - 1];
         if (lastItem && lastItem.type === 'paragraph') {
-          // Add a space before appending if there isn't one
           lastItem.content += ' ' + line;
         } else {
           processedBlocks.push({ type: 'paragraph', content: line });
@@ -346,7 +183,6 @@ const ContentParser = ({ blocks, theme }) => {
   return (
     <div className="space-y-8 text-slate-300">
       {processedBlocks.map((item, index) => {
-        // Company/Service subheading (first subheading - make it bold)
         if (item.type === 'company_subheading') {
           return (
             <motion.h2
@@ -361,9 +197,8 @@ const ContentParser = ({ blocks, theme }) => {
           );
         }
 
-        // Bullet points in grid
         if (item.type === 'bullets') {
-          const items = item.content.split(/\n|â€¢/).filter(line => line.trim().length > 0);
+          const items = item.content.split(/\n|•/).filter(line => line.trim().length > 0);
           return (
             <motion.div 
               key={index}
@@ -372,13 +207,12 @@ const ContentParser = ({ blocks, theme }) => {
               viewport={{ once: true }}
               className="my-8"
             >
-              {/* LAYOUT FIX: Changed to max 2 cols to make cards wider and fill right-side space */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {items.map((line, i) => (
                   <motion.div 
                     key={i} 
                     whileHover={{ y: -5, backgroundColor: "rgba(255, 255, 255, 0.03)" }}
-                    className={`flex items-start gap-3 text-base text-slate-300 bg-slate-900/40 p-5 rounded-xl border border-white/5 shadow-lg backdrop-blur-sm group hover:${theme.border} transition-all duration-300`}
+                    className={`flex items-start gap-3 text-base text-slate-300 bg-slate-900/40 p-5 rounded-xl border border-white/5 shadow-lg backdrop-blur-sm group hover:border-amber-500/30 transition-all duration-300`}
                   >
                     <div className={`mt-1 p-1 rounded-full bg-white/5 ${theme.text}`}>
                       <CheckCircle2 className="w-4 h-4" />
@@ -391,7 +225,6 @@ const ContentParser = ({ blocks, theme }) => {
           );
         }
         
-        // Simple list (heading + list items)
         if (item.type === 'simple_list') {
           return (
             <motion.div
@@ -416,7 +249,6 @@ const ContentParser = ({ blocks, theme }) => {
           );
         }
 
-        // Section headings (? or :)
         if (item.type === 'section_heading') {
           return (
             <motion.h3 
@@ -431,7 +263,6 @@ const ContentParser = ({ blocks, theme }) => {
           );
         }
 
-        // Feature cards (short heading + content in styled box)
         if (item.type === 'feature_card') {
           return (
             <motion.div
@@ -440,9 +271,8 @@ const ContentParser = ({ blocks, theme }) => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               whileHover={{ y: -5 }}
-              className={`relative p-6 rounded-xl bg-gradient-to-br from-white/5 to-transparent border border-white/10 hover:${theme.border} shadow-lg backdrop-blur-sm group transition-all duration-300 my-6`}
+              className={`relative p-6 rounded-xl bg-gradient-to-br from-white/5 to-transparent border border-white/10 hover:border-amber-500/30 shadow-lg backdrop-blur-sm group transition-all duration-300 my-6`}
             >
-              {/* Glow effect on hover */}
               <div 
                 className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-30 blur-xl transition-opacity duration-300"
                 style={{ background: `radial-gradient(circle at center, ${theme.hex}60, transparent 70%)` }}
@@ -463,7 +293,6 @@ const ContentParser = ({ blocks, theme }) => {
           );
         }
 
-        // Regular paragraphs
         return (
           <motion.p 
             initial={{ opacity: 0 }}
@@ -481,66 +310,191 @@ const ContentParser = ({ blocks, theme }) => {
 };
 
 // --- 4. MAIN PAGE COMPONENT ---
-const ServicePage = () => {
-  const service = industriesData.find(s => s.id === 'real-estate');
-  const meta = seoData['static-website'] || {}; 
-  const serviceBasePath = WEB_SERVICES_BASE;
-  const serviceListPath = serviceBasePath;
-  const servicePath = `${serviceBasePath}/real-estate`;
+const RealEstatePage = () => {
+  const pageTitle = "Real Estate";
+  const pageCategory = "Industries";
+  const pageImage = "/img/Services/istockphoto-1209989349-612x612.jpg";
+  const pageDescription = "Transform real estate business with digital marketing";
+  const pageFullDescription = `Best Real Estate Digital Marketing Services – IHO Digital
+The real estate industry is highly competitive, and property buyers, sellers, and investors now search online for properties, agents, and developers. IHO Digital provides result-driven real estate digital marketing services in Noida and Delhi NCR, helping real estate businesses increase visibility, generate quality leads, and close more deals through powerful online strategies.
+Whether you run a real estate agency, property development company, individual agent, or property management firm, our tailored marketing solutions help you connect with serious property buyers and renters at the right time. If you are searching for the best real estate digital marketing agency near me, IHO Digital delivers measurable growth with data-driven campaigns.
+Why Digital Marketing is Essential for Real Estate Business
+Property seekers search online before buying, selling, or renting properties. A strong digital presence ensures your real estate business appears when potential clients search for properties or real estate services.
+Key reasons real estate businesses need digital marketing:
+Increase online visibility in competitive property markets
 
-  const theme = useMemo(() => {
-    if (!service) return themePalette.blue;
-    return getTheme(service.id, service.color);
-  }, [service]);
+Generate qualified property buyer and seller leads
 
-  const relatedServices = useMemo(() => {
-    return industriesData
-      .filter(s => s.category === service?.category && s.id !== 'real-estate')
-      .slice(0, 4);
-  }, [industriesData, service]);
+Build trust and credibility through professional branding
+
+Showcase property listings to targeted audiences
+
+Reach local property seekers in Noida, Delhi NCR, and nearby areas
+
+Improve engagement through social media platforms
+
+With professional marketing strategies, your real estate business can attract more clients and close more deals.
+Our Real Estate Digital Marketing Services
+As a leading real estate marketing agency in Noida & Delhi NCR, IHO Digital offers comprehensive solutions tailored to real estate businesses.
+1. Real Estate SEO Services
+We optimize your website to rank higher on Google for relevant keywords like:
+best properties in Noida
+
+real estate agents near me in Delhi NCR
+
+apartments for sale in Delhi NCR
+
+real estate marketing agency near me
+
+Our SEO strategies include keyword research, technical optimization, content creation, and local SEO to improve rankings and traffic.
+2. Google Ads & Paid Advertising
+Promote property listings with targeted paid ads. Our Google Ads campaigns help:
+Generate high-quality buyer and renter inquiries
+
+Increase property viewings and site visits
+
+Target specific locations like Noida and Delhi NCR
+
+Showcase new project launches and developments
+
+3. Social Media Marketing
+We manage social media platforms like Facebook, Instagram, and YouTube to:
+Showcase property listings and virtual tours
+
+Share client testimonials and success stories
+
+Engage with potential buyers and investors
+
+Increase brand awareness in the property market
+
+4. Content Marketing & Property Blogs
+Quality content builds authority and trust in the real estate market. We create:
+Property market updates and trends
+
+Neighborhood guides and location features
+
+Investment advice and property tips
+
+SEO-friendly landing pages for listings
+
+5. Website Design & Lead Generation
+We design user-friendly real estate websites that:
+Showcase property listings with high-quality images
+
+Improve lead capture through inquiry forms
+
+Enhance mobile experience for property seekers
+
+Increase conversion rates
+
+6. Lead Generation & Remarketing
+Our remarketing campaigns help reconnect with users who visited your property listings but didn't make an inquiry, improving conversion and deal closure rates.
+Types of Real Estate Businesses We Serve
+IHO Digital provides specialized marketing solutions for:
+Real Estate Agencies & Brokers
+
+Property Developers & Builders
+
+Individual Real Estate Agents
+
+Property Management Companies
+
+Commercial Real Estate Firms
+
+Residential Property Consultants
+
+Landlords & Property Investors
+
+Benefits of Digital Marketing for Real Estate Industry
+Partnering with a professional real estate marketing company in Delhi NCR provides:
+Higher Search Engine Rankings for Property Keywords
+
+Increased Property Inquiries & Client Leads
+
+Stronger Brand Reputation in Local Markets
+
+Local Visibility in Noida & Delhi NCR
+
+Better Engagement with Buyers & Sellers
+
+Measurable Marketing ROI
+
+With targeted campaigns, real estate businesses can attract serious clients while maximizing marketing budgets.
+Why Choose IHO Digital – Real Estate Marketing Agency Near You
+IHO Digital is a trusted digital marketing company for real estate sector in Noida and Delhi NCR with proven expertise in generating leads and building strong property brands.
+What makes us the best choice:
+Deep Understanding of Real Estate Industry Trends
+
+Local SEO Expertise for Delhi NCR Market
+
+Data-Driven Marketing Strategies
+
+Creative Content & Campaign Management
+
+Transparent Reporting & Analytics
+
+Customized Marketing Plans for Real Estate Businesses
+
+Our team focuses on long-term growth, helping real estate businesses stand out in a highly competitive online property market.
+Our Marketing Process for Real Estate Businesses
+Understand your real estate goals and target audience
+
+Conduct in-depth keyword and competitor research
+
+Develop customized marketing strategies
+
+Launch SEO, social media, and paid campaigns
+
+Monitor performance and optimize regularly
+
+Provide detailed reports and continuous improvements
+
+This structured approach ensures consistent results and improved client engagement.
+Local SEO for Real Estate Businesses in Noida & Delhi NCR
+Local SEO is essential for attracting property seekers searching for real estate services near their location. We optimize:
+Google Business Profile listings for real estate
+
+Location-based keywords for property searches
+
+Local citations and directories
+
+Reviews and reputation management
+
+This helps your real estate business appear in "near me" searches and local Google results.
+Property Types We Promote
+Residential Apartments & Flats
+
+Commercial Buildings & Offices
+
+Luxury Villas & Penthouses
+
+Plots & Land Development
+
+Retail Spaces & Shopping Complex
+
+Industrial Properties
+
+Partner with the Best Real Estate Digital Marketing Agency in Noida & Delhi NCR
+If you are looking for the best real estate digital marketing services near me, IHO Digital helps real estate businesses increase visibility, generate more property inquiries, and close more deals through effective online strategies.
+Contact IHO Digital today to discuss your real estate marketing goals and start your digital growth journey.`;
+
+  const pageFeatures = [
+    "Real Estate Websites",
+    "Property Listing Pages", 
+    "Lead Generation",
+    "Real Estate SEO",
+    "Virtual Property Tours",
+    "Real Estate Social Media Marketing"
+  ];
 
   useEffect(() => { window.scrollTo(0, 0); }, []);
 
-  if (!service) {
-    return (
-      <div className="min-h-screen bg-black text-white flex items-center justify-center text-center px-6">
-        <SEO
-          title="Service Not Found - IHO Digital"
-          description="The requested service page could not be found."
-          noindex
-          nofollow
-        />
-        <p className="text-lg md:text-xl font-semibold">Service not found</p>
-      </div>
-    );
-  }
-
-  const fullText = service.fullDescription || "";
+  const fullText = pageFullDescription || "";
   const allBlocks = fullText.split('\n\n');
   
   let introBlocks = [];
   let mainBodyBlocks = [];
   
-  // Helper to detect section headings
-  const isSectionStart = (block) => {
-    const trimmed = block.trim();
-    const words = trimmed.split(/\s+/);
-    
-    // Check for common section markers
-    if (
-      trimmed.includes('What Is') ||
-      trimmed.includes('Why ') ||
-      trimmed.includes('Our ') ||
-      (words.length <= 10 && (trimmed.endsWith('?') || trimmed.endsWith(':'))) ||
-      trimmed.match(/^(Services|Features|Benefits|Industries|Platforms|Solutions)/i)
-    ) {
-      return true;
-    }
-    return false;
-  };
-  
-  // Split content logic - ONLY first 1-2 blocks beside image, rest goes full-width
-  // Check if first block is very short (less than 300 chars), if so take 2 blocks
   const firstBlockLength = allBlocks[0] ? allBlocks[0].length : 0;
   const introCount = firstBlockLength < 300 && allBlocks.length > 1 ? 2 : 1;
   
@@ -556,22 +510,13 @@ const ServicePage = () => {
   return (
     <div className="min-h-screen bg-black text-slate-200 overflow-x-hidden selection:bg-white/20 selection:text-white">
       <SEO 
-        title={meta.title || `${service.title} - IHO Digital`} 
-        description={meta.description || service.desc}
-        canonical={servicePath}
-        ogTitle={meta.ogTitle}
-        ogDescription={meta.ogDescription}
-        ogType={meta.ogType || "website"}
-        instagramTitle={meta.instagramTitle}
-        instagramDescription={meta.instagramDescription}
-        schemaType={meta.schemaType}
-        schemaName={meta.schemaName || service.title}
-        schemaDescription={meta.schemaDescription || service.desc}
+        title={`${pageTitle} - IHO Digital`} 
+        description={pageDescription}
+        canonical="/industries/real-estate"
       />
 
       {/* --- BREADCRUMB HEADER --- */}
       <div className={`pt-28 pb-6 border-b border-white/5 bg-gradient-to-r ${theme.gradient} relative overflow-hidden`}>
-        {/* SUPER STRONG Header Gradient Effects */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div 
             className="absolute -top-20 -left-32 w-[900px] h-[900px] rounded-full blur-[180px] opacity-90 animate-pulse"
@@ -596,15 +541,14 @@ const ServicePage = () => {
         <div className="container mx-auto max-w-7xl px-6 flex items-center gap-2 text-sm opacity-80 relative z-10">
           <Link to="/" className="hover:text-white flex items-center gap-1 transition-colors"><Home className="w-3.5 h-3.5" /> Home</Link>
           <ChevronRight className="w-3.5 h-3.5" />
-          <Link to={serviceListPath} className={`${theme.text} hover:text-white transition-colors`}>{service.category}</Link>
+          <Link to="/industries" className={`${theme.text} hover:text-white transition-colors`}>{pageCategory}</Link>
           <ChevronRight className="w-3.5 h-3.5" />
-          <span className="text-slate-200">{service.title}</span>
+          <span className="text-slate-200">{pageTitle}</span>
         </div>
       </div>
 
       {/* --- MAIN LAYOUT --- */}
       <div className="bg-gradient-to-b from-slate-900 via-black to-slate-950 py-16 relative">
-        {/* SUPER STRONG Left Side Gradient Effects */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div 
             className="absolute top-0 -left-32 w-[1200px] h-[1200px] rounded-full blur-[200px] opacity-80 animate-pulse"
@@ -641,10 +585,8 @@ const ServicePage = () => {
           />
         </div>
 
-        {/* CONTAINER 1: HEADER & INTRO (CENTERED) */}
+        {/* CONTAINER 1: HEADER & INTRO */}
         <div className="container mx-auto max-w-7xl px-6 relative z-10">
-          
-          {/* Category Badge */}
           <motion.div 
             initial={{ opacity: 0, y: -20 }} 
             animate={{ opacity: 1, y: 0 }} 
@@ -670,13 +612,13 @@ const ServicePage = () => {
                 boxShadow: `0 0 30px ${theme.hex}60, 0 0 15px ${theme.hex}40, inset 0 0 20px ${theme.hex}10`
               }}
             >
-              {service.icon && <service.icon className={`${theme.text}`} />}
-              <span className={`text-sm font-bold uppercase tracking-wider ${theme.text}`}>{service.category}</span>
+              <Building2 className={`${theme.text}`} />
+              <span className={`text-sm font-bold uppercase tracking-wider ${theme.text}`}>{pageCategory}</span>
             </div>
           </motion.div>
 
           <div className="mb-16 flex justify-center text-center">
-            <TiltHeading text={service.title} theme={theme} />
+            <TiltHeading text={pageTitle} theme={theme} />
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start mb-16">
@@ -689,9 +631,8 @@ const ServicePage = () => {
                 <motion.div 
                   whileHover={{ scale: 1.02 }} 
                   className="relative rounded-xl overflow-hidden aspect-video cursor-zoom-in" 
-                  onClick={() => setIsLightboxOpen(true)}
                 >
-                  <img src={service.img || "/img/portfolio-5.png"} alt={service.title} className="w-full h-full object-cover" />
+                  <img src={pageImage} alt={pageTitle} className="w-full h-full object-cover" />
                   <div className={`${theme.glow} opacity-0 group-hover:opacity-20 transition-opacity duration-300`} />
                   <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
                 </motion.div>
@@ -700,7 +641,7 @@ const ServicePage = () => {
           </div>
         </div>
 
-        {/* CONTAINER 2: BODY CONTENT (CENTERED) */}
+        {/* CONTAINER 2: BODY CONTENT */}
         <div className="container mx-auto max-w-7xl px-6 relative z-10">
           <motion.div 
             initial={{ opacity: 0, y: 30 }} 
@@ -715,7 +656,7 @@ const ServicePage = () => {
       </div>
 
       {/* --- FEATURES SECTION --- */}
-      {service.features?.length > 0 && (
+      {pageFeatures.length > 0 && (
         <div className="bg-black py-20 border-t border-white/5 relative">
           <div className="container mx-auto max-w-7xl px-6 relative z-10">
             <div className="text-center mb-14">
@@ -723,13 +664,13 @@ const ServicePage = () => {
               <div className={`h-1.5 w-24 ${theme.accent} rounded-full mx-auto shadow-[0_0_20px_${theme.hex}]`} />
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {service.features.map((feature, i) => (
+              {pageFeatures.map((feature, i) => (
                 <motion.div 
                   key={i} 
                   whileHover={{ y: -8, boxShadow: `0 10px 30px -10px ${theme.hex}30` }} 
                   className={`bg-white/5 border border-white/10 p-6 rounded-2xl hover:border-white/20 transition-all duration-300 flex items-start gap-4 backdrop-blur-md group`}
                 >
-                  <div className={`p-3 rounded-xl bg-white/5 ${theme.text} group-hover:bg-${theme.accent} group-hover:text-white transition-colors duration-300`}>
+                  <div className={`p-3 rounded-xl bg-white/5 ${theme.text} group-hover:bg-amber-600 group-hover:text-white transition-colors duration-300`}>
                     <CheckCircle2 className="w-6 h-6" />
                   </div>
                   <span className="text-slate-300 font-medium leading-relaxed text-lg group-hover:text-white transition-colors">{feature}</span>
@@ -764,41 +705,81 @@ const ServicePage = () => {
         </div>
       </div>
 
-      {/* --- RELATED SERVICES --- */}
-      {relatedServices.length > 0 && (
-        <div className="py-24 bg-black container mx-auto max-w-7xl px-6 relative overflow-hidden">
-          <div className="absolute inset-0 overflow-hidden pointer-events-none">
-            <div className={`absolute top-1/4 left-1/4 w-[400px] h-[400px] ${theme.glow} rounded-full blur-[100px] opacity-25`} />
-            <div className={`absolute bottom-1/4 right-1/4 w-[300px] h-[300px] ${theme.glow} rounded-full blur-[80px] opacity-20`} />
-            <div className={`absolute top-1/2 -left-10 w-[500px] h-[500px] ${theme.glow} rounded-full blur-[120px] opacity-30`} />
-          </div>
-          <div className="relative z-10">
-            <h3 className="text-3xl font-bold text-white mb-10">More {service.category} Solutions</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-              {relatedServices.map((related, i) => (
-                <Link key={related.id} to={`${serviceBasePath}/${related.id}`} className="group block h-full">
-                  <div className="bg-slate-900/40 border border-white/5 rounded-2xl overflow-hidden hover:border-white/20 transition-all hover:shadow-2xl h-full flex flex-col hover:-translate-y-2 backdrop-blur-sm">
-                    <div className="relative h-48 bg-slate-950 overflow-hidden">
-                      <img src={related.img || "/img/portfolio-5.png"} alt={related.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
-                      <div className="absolute bottom-4 left-4 p-2 bg-white/10 backdrop-blur-md rounded-lg border border-white/10">
-                         {related.icon ? <related.icon className={`${theme.text}`} /> : <Layers className={`${theme.text}`} />}
-                      </div>
-                    </div>
-                    <div className="p-6 flex-1 flex flex-col">
-                      <h4 className={`text-lg font-bold text-white mb-3 group-hover:${theme.text} transition-colors`}>{related.title}</h4>
-                      <p className="text-slate-400 text-sm line-clamp-3 mb-4">{related.desc}</p>
-                      <span className={`${theme.text} text-sm font-bold flex items-center gap-2 mt-auto uppercase`}>Learn More <ArrowRight className="w-4 h-4" /></span>
-                    </div>
+      {/* --- RELATED INDUSTRIES --- */}
+      <div className="py-24 bg-black container mx-auto max-w-7xl px-6 relative overflow-hidden">
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className={`absolute top-1/4 left-1/4 w-[400px] h-[400px] ${theme.glow} rounded-full blur-[100px] opacity-25`} />
+          <div className={`absolute bottom-1/4 right-1/4 w-[300px] h-[300px] ${theme.glow} rounded-full blur-[80px] opacity-20`} />
+          <div className={`absolute top-1/2 -left-10 w-[500px] h-[500px] ${theme.glow} rounded-full blur-[120px] opacity-30`} />
+        </div>
+        <div className="relative z-10">
+          <h3 className="text-3xl font-bold text-white mb-10">More Industry Solutions</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <Link to="/industries/healthcare" className="group block h-full">
+              <div className="bg-slate-900/40 border border-white/5 rounded-2xl overflow-hidden hover:border-white/20 transition-all hover:shadow-2xl h-full flex flex-col hover:-translate-y-2 backdrop-blur-sm">
+                <div className="relative h-48 bg-slate-950 overflow-hidden">
+                  <img src="/img/Services/istockphoto-1167624088-612x612.jpg" alt="Healthcare" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                  <div className="absolute bottom-4 left-4 p-2 bg-white/10 backdrop-blur-md rounded-lg border border-white/10">
+                    <Layers className={`${theme.text}`} />
                   </div>
-                </Link>
-              ))}
-            </div>
+                </div>
+                <div className="p-6 flex-1 flex flex-col">
+                  <h4 className={`text-lg font-bold text-white mb-3 group-hover:${theme.text} transition-colors`}>Healthcare</h4>
+                  <p className="text-slate-400 text-sm line-clamp-3 mb-4">Modernize healthcare delivery with technology</p>
+                  <span className={`${theme.text} text-sm font-bold flex items-center gap-2 mt-auto uppercase`}>Learn More <ArrowRight className="w-4 h-4" /></span>
+                </div>
+              </div>
+            </Link>
+            <Link to="/industries/technology" className="group block h-full">
+              <div className="bg-slate-900/40 border border-white/5 rounded-2xl overflow-hidden hover:border-white/20 transition-all hover:shadow-2xl h-full flex flex-col hover:-translate-y-2 backdrop-blur-sm">
+                <div className="relative h-48 bg-slate-950 overflow-hidden">
+                  <img src="/img/Services/imgi_10_saas-development.webp" alt="Technology" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                  <div className="absolute bottom-4 left-4 p-2 bg-white/10 backdrop-blur-md rounded-lg border border-white/10">
+                    <Layers className={`${theme.text}`} />
+                  </div>
+                </div>
+                <div className="p-6 flex-1 flex flex-col">
+                  <h4 className={`text-lg font-bold text-white mb-3 group-hover:${theme.text} transition-colors`}>Technology</h4>
+                  <p className="text-slate-400 text-sm line-clamp-3 mb-4">Drive innovation with cutting-edge digital solutions</p>
+                  <span className={`${theme.text} text-sm font-bold flex items-center gap-2 mt-auto uppercase`}>Learn More <ArrowRight className="w-4 h-4" /></span>
+                </div>
+              </div>
+            </Link>
+            <Link to="/industries/education" className="group block h-full">
+              <div className="bg-slate-900/40 border border-white/5 rounded-2xl overflow-hidden hover:border-white/20 transition-all hover:shadow-2xl h-full flex flex-col hover:-translate-y-2 backdrop-blur-sm">
+                <div className="relative h-48 bg-slate-950 overflow-hidden">
+                  <img src="/img/Services/istockphoto-2218180281-612x612.jpg" alt="Education" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                  <div className="absolute bottom-4 left-4 p-2 bg-white/10 backdrop-blur-md rounded-lg border border-white/10">
+                    <Layers className={`${theme.text}`} />
+                  </div>
+                </div>
+                <div className="p-6 flex-1 flex flex-col">
+                  <h4 className={`text-lg font-bold text-white mb-3 group-hover:${theme.text} transition-colors`}>Education</h4>
+                  <p className="text-slate-400 text-sm line-clamp-3 mb-4">Transform learning experiences with digital solutions</p>
+                  <span className={`${theme.text} text-sm font-bold flex items-center gap-2 mt-auto uppercase`}>Learn More <ArrowRight className="w-4 h-4" /></span>
+                </div>
+              </div>
+            </Link>
+            <Link to="/industries/ecommerce" className="group block h-full">
+              <div className="bg-slate-900/40 border border-white/5 rounded-2xl overflow-hidden hover:border-white/20 transition-all hover:shadow-2xl h-full flex flex-col hover:-translate-y-2 backdrop-blur-sm">
+                <div className="relative h-48 bg-slate-950 overflow-hidden">
+                  <img src="/img/Services/istockphoto-542107030-612x612.webp" alt="E-commerce" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                  <div className="absolute bottom-4 left-4 p-2 bg-white/10 backdrop-blur-md rounded-lg border border-white/10">
+                    <Layers className={`${theme.text}`} />
+                  </div>
+                </div>
+                <div className="p-6 flex-1 flex flex-col">
+                  <h4 className={`text-lg font-bold text-white mb-3 group-hover:${theme.text} transition-colors`}>E-commerce</h4>
+                  <p className="text-slate-400 text-sm line-clamp-3 mb-4">Boost online sales with powerful e-commerce platforms</p>
+                  <span className={`${theme.text} text-sm font-bold flex items-center gap-2 mt-auto uppercase`}>Learn More <ArrowRight className="w-4 h-4" /></span>
+                </div>
+              </div>
+            </Link>
           </div>
         </div>
-      )}
+      </div>
     </div>
   );
 };
 
-export default ServicePage;
-
+export default RealEstatePage;

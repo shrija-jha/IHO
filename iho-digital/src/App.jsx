@@ -10,32 +10,29 @@ import Home from "./pages/Home";
 import About from "./pages/About";
 import WebServices from "./pages/WebServices";
 import DigitalMarketing from "./pages/DigitalMarketing";
-import Industries from "./pages/Industries"; // This is your CARD LIST page
+import Industries from "./pages/Industries";
 import Portfolio from "./pages/Portfolio";
 import Blog from "./pages/Blog";
 import BlogDetail from "./pages/BlogDetail";
 import Contact from "./pages/Contact";
-
-// --- DETAIL PAGES ---
-import ServiceDetail from "./pages/ServiceDetail";
-import IndustryDetail from "./pages/IndustryDetail"; // The new detailed page
+import LegalPage from "./pages/LegalPage";
 
 // --- INDUSTRY PAGES ---
-import EducationPage from "./pages/industries/education";
-import HealthcarePage from "./pages/industries/healthcare";
-import TechnologyPage from "./pages/industries/technology";
-import EcommercePage from "./pages/industries/ecommerce";
-import HumanResourcesPage from "./pages/industries/human-resources";
-import FoodBeveragePage from "./pages/industries/food-beverage";
-import AutomotivePage from "./pages/industries/automotive";
-import TravelTourismPage from "./pages/industries/travel-tourism";
-import PhotographyPage from "./pages/industries/photography";
-import RealEstatePage from "./pages/industries/real-estate";
-import LogisticsPage from "./pages/industries/logistics";
-import PublishingPage from "./pages/industries/publishing";
-import EntertainmentPage from "./pages/industries/entertainment";
-import BeautyPersonalCarePage from "./pages/industries/beauty-personal-care";
-import ManufacturingPage from "./pages/industries/manufacturing";
+import EducationPage from "./pages/industries/education.jsx";
+import HealthcarePage from "./pages/industries/healthcare.jsx";
+import TechnologyPage from "./pages/industries/technology.jsx";
+import EcommercePage from "./pages/industries/ecommerce.jsx";
+import HumanResourcesPage from "./pages/industries/human-resources.jsx";
+import FoodBeveragePage from "./pages/industries/food-beverage.jsx";
+import AutomotivePage from "./pages/industries/automotive.jsx";
+import TravelTourismPage from "./pages/industries/travel-tourism.jsx";
+import PhotographyPage from "./pages/industries/photography.jsx";
+import RealEstatePage from "./pages/industries/real-estate.jsx";
+import LogisticsPage from "./pages/industries/logistics.jsx";
+import PublishingPage from "./pages/industries/publishing.jsx";
+import EntertainmentPage from "./pages/industries/entertainment.jsx";
+import BeautyPersonalCarePage from "./pages/industries/beauty-personal-care.jsx";
+import ManufacturingPage from "./pages/industries/manufacturing.jsx";
 
 // --- SERVICE PAGES ---
 import StaticWebsitePage from "./pages/services/static-website";
@@ -99,19 +96,10 @@ const App = () => {
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
         
-        {/* Services */}
         <Route path="/web-services" element={<WebServices />} />
-        <Route path="/web-services/:id" element={<ServiceDetail />} />
         <Route path="/digital-marketing" element={<DigitalMarketing />} />
-        <Route path="/digital-marketing/:id" element={<ServiceDetail />} />
-        <Route path="/service/:id" element={<ServiceDetail />} />
-        
-        {/* --- INDUSTRIES ROUTING --- */}
-        
-        {/* Main List Page (e.g. /industries) shows the grid of cards */}
         <Route path="/industries" element={<Industries />} />
         
-        {/* Individual Industry Pages */}
         <Route path="/industries/education" element={<EducationPage />} />
         <Route path="/industries/healthcare" element={<HealthcarePage />} />
         <Route path="/industries/technology" element={<TechnologyPage />} />
@@ -127,13 +115,7 @@ const App = () => {
         <Route path="/industries/entertainment" element={<EntertainmentPage />} />
         <Route path="/industries/beauty-personal-care" element={<BeautyPersonalCarePage />} />
         <Route path="/industries/manufacturing" element={<ManufacturingPage />} />
-        
-        {/* Fallback Detail Page (e.g. /industries/other) shows the specific content */}
-        <Route path="/industries/:id" element={<IndustryDetail />} />
 
-        {/* --- SERVICES ROUTING --- */}
-        
-        {/* Individual Service Pages */}
         <Route path="/web-services/static-website" element={<StaticWebsitePage />} />
         <Route path="/web-services/cms-development" element={<CmsDevelopmentPage />} />
         <Route path="/web-services/responsive-design" element={<ResponsiveDesignPage />} />
@@ -184,11 +166,13 @@ const App = () => {
         <Route path="/digital-marketing/affiliate-marketing" element={<AffiliateMarketingPage />} />
         <Route path="/digital-marketing/blog-writing" element={<BlogWritingPage />} />
         <Route path="/digital-marketing/newsletter-campaigns" element={<NewsletterCampaignsPage />} />
-        {/* Other Pages */}
+        
         <Route path="/portfolio" element={<Portfolio />} />
         <Route path="/blog" element={<Blog />} />
         <Route path="/blog/:slug" element={<BlogDetail />} />
         <Route path="/contact" element={<Contact />} />
+        
+        <Route path="/legal/:slug" element={<LegalPage />} />
         
       </Routes>
       

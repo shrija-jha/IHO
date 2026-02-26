@@ -66,7 +66,7 @@ const Contact = () => {
             <ContactCard 
               icon={Mail} 
               title="Email Us" 
-              value="ihodigital.com@gmail.com" 
+              value="info@ihodigital.com" 
               color="blue" 
               delay={0.1} 
             />
