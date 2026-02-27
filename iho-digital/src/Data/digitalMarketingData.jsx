@@ -11,7 +11,7 @@ export const digitalMarketingData = [
     category: "Digital Marketing",
     desc: "Professional and strategic SEO services that help your business rank higher, increase organic traffic, and generate consistent leads.",
     color: "blue",
-    img: "/img/Services/imgi_50_Agentic-SEO-How-AI-Agents-Are-Changing-SEO-Workflows.webp",
+    img: "/img/Services/SEO.png",
     features: [
       "Higher Search Engine Visibility",
       "Increased Organic Traffic",
@@ -46,7 +46,7 @@ We cover every essential area of SEO to ensure your website performs at its best
 
 1. SEO Audit & Custom Strategy
 
-We begin with a detailed SEO audit to analyze your website’s strengths, weaknesses, and hidden issues. This audit covers:
+We begin with a detailed SEO audit to analyze your website's strengths, weaknesses, and hidden issues. This audit covers:
 
 - Technical errors
 - Page speed issues
@@ -121,7 +121,7 @@ All backlinks are earned through clean and ethical practices, ensuring long-term
 
 7. Local SEO for City-Based Ranking
 
-If you target customers in specific cities, our Local SEO services help you rank for location-based searches such as “near me.” We optimize:
+If you target customers in specific cities, our Local SEO services help you rank for location-based searches such as "near me." We optimize:
 
 - Google Business Profile
 - Local directories and citations
@@ -153,11 +153,7 @@ Why Choose IHO Digital as Your SEO Partner?
 - Dedicated support team
 - Affordable and flexible SEO plans
 
-As a top SEO company in Noida, we are committed to delivering real growth and measurable results. Whether you're looking for premium SEO or affordable SEO packages in India, we provide solutions that help your business achieve long-term success.`,
-    features: ["SEO Audit & Strategy", "Keyword Research", "On-Page Optimization", "Technical SEO", "Content Creation"],
-    icon: LineChart,
-    color: "blue",
-    category: "Digital Marketing"
+As a top SEO company in Noida, we are committed to delivering real growth and measurable results. Whether you're looking for premium SEO or affordable SEO packages in India, we provide solutions that help your business achieve long-term success.`
   },
   {
     id: "seo-audits",
@@ -166,7 +162,7 @@ As a top SEO company in Noida, we are committed to delivering real growth and me
     category: "Digital Marketing",
     desc: "Detailed analysis identifying technical errors, content gaps, and optimization opportunities.",
     color: "cyan",
-    img: "/img/Services/imgi_631_1_5IYtIe5OwxeoYXi226J-Uw-1.jpg",
+    img: "/img/Services/SEO AUDIT.png",
     features: [
       "Identify Technical Errors",
       "Uncover Content Gaps",
@@ -176,13 +172,13 @@ As a top SEO company in Noida, we are committed to delivering real growth and me
     ],
     fullDescription: `Best SEO Audit Services in Noida – IHO Digital
 
-IHO Digital is a trusted SEO audit company in Noida & Delhi NCR, helping businesses identify issues affecting their website’s search engine performance. An SEO audit is the foundation of any successful SEO strategy, allowing businesses to uncover technical errors, content gaps, and optimization opportunities to improve rankings, organic traffic, and overall online visibility.
+IHO Digital is a trusted SEO audit company in Noida & Delhi NCR, helping businesses identify issues affecting their website's search engine performance. An SEO audit is the foundation of any successful SEO strategy, allowing businesses to uncover technical errors, content gaps, and optimization opportunities to improve rankings, organic traffic, and overall online visibility.
 
 If you are searching for the best SEO audit services near me or a reliable SEO audit company in Delhi NCR, IHO Digital provides detailed, actionable, and data-driven audits tailored to your business goals.
 
 What Is an SEO Audit?
 
-An SEO audit is a comprehensive analysis of a website’s performance, structure, and content to ensure it meets search engine guidelines. It identifies issues that prevent your website from ranking higher and provides recommendations to optimize technical SEO, on-page elements, and off-page strategies.
+An SEO audit is a comprehensive analysis of a website's performance, structure, and content to ensure it meets search engine guidelines. It identifies issues that prevent your website from ranking higher and provides recommendations to optimize technical SEO, on-page elements, and off-page strategies.
 
 SEO audits help businesses:
 
@@ -223,7 +219,7 @@ Why Choose IHO Digital – SEO Audit Company Near You
 - Customized SEO Audit Plans for Every Business
 - Focus on Long-Term SEO Growth & Conversions
 
-We ensure every audit is detailed, actionable, and tailored to your website’s specific needs.
+We ensure every audit is detailed, actionable, and tailored to your website's specific needs.
 
 Industries We Serve
 
@@ -236,11 +232,7 @@ Industries We Serve
 
 Contact – Best SEO Audit Company in Noida & Delhi NCR
 
-IHO Digital is a trusted SEO audit agency near you providing thorough website audits that improve rankings, drive organic traffic, and enhance overall digital performance.`,
-    features: ["Technical Analysis", "Content Audit", "Competitor Benchmarking", "Local SEO Audit"],
-    icon: Search,
-    color: "cyan",
-    category: "Digital Marketing"
+IHO Digital is a trusted SEO audit agency near you providing thorough website audits that improve rankings, drive organic traffic, and enhance overall digital performance.`
   },
   {
     id: "google-analytics-setup",
@@ -249,7 +241,7 @@ IHO Digital is a trusted SEO audit agency near you providing thorough website au
     category: "Digital Marketing",
     desc: "Professional setup to understand user behavior, track performance, and make data-driven decisions.",
     color: "green",
-    img: "/img/Services/istockphoto-542107030-612x612.webp",
+    img: "/img/Services/Technical SEO.png",
     features: [
       "Track User Behavior",
       "Measure Campaign Performance",
@@ -323,15 +315,11 @@ Why Choose IHO Digital for Google Analytics Setup?
 - Post-setup support & optimization
 - Data-driven growth approach
 
-We don’t just install analytics—we help you understand your data and use it to grow your business.
+We don't just install analytics—we help you understand your data and use it to grow your business.
 
 Get Google Analytics Setup Done Right
 
-If you’re looking for a reliable Google Analytics setup company in Delhi NCR or Noida, IHO Digital is your trusted partner. Let us configure your analytics the right way, so you can track performance, improve marketing strategies, and make smarter business decisions.`,
-    features: ["GA4 Setup & Migration", "Event Tracking", "E-commerce Tracking", "GTM Integration"],
-    icon: LineChart,
-    color: "green",
-    category: "Digital Marketing"
+If you're looking for a reliable Google Analytics setup company in Delhi NCR or Noida, IHO Digital is your trusted partner. Let us configure your analytics the right way, so you can track performance, improve marketing strategies, and make smarter business decisions.`
   },
   {
     id: "competitor-analysis",
@@ -340,7 +328,7 @@ If you’re looking for a reliable Google Analytics setup company in Delhi NCR o
     category: "Digital Marketing",
     desc: "Study industry rivals' SEO performance, paid ads, and strategies to outperform them.",
     color: "purple",
-    img: "/img/Services/imgi_49_Whyctr-predicts-financial-efficiency-in-digital-marketing.webp",
+    img: "/img/Services/Competitor Analysis.jpeg",
     features: [
       "Keyword Gap Analysis",
       "Backlink Comparison",
@@ -350,13 +338,13 @@ If you’re looking for a reliable Google Analytics setup company in Delhi NCR o
     ],
     fullDescription: `Competitor Analysis Services in Delhi by IHO Digital
 
-In today’s competitive digital landscape, understanding your competitors is the key to staying ahead. IHO Digital offers professional Competitor Analysis Services in Delhi NCR and Noida to help businesses identify opportunities, analyze competitors’ strategies, and build smarter marketing plans.
+In today's competitive digital landscape, understanding your competitors is the key to staying ahead. IHO Digital offers professional Competitor Analysis Services in Delhi NCR and Noida to help businesses identify opportunities, analyze competitors' strategies, and build smarter marketing plans.
 
-As a trusted Competitor Analysis Company in Delhi NCR, we study your industry rivals’ SEO performance, paid ads, website strategies, content marketing, and digital presence—so you can outperform them with confidence.
+As a trusted Competitor Analysis Company in Delhi NCR, we study your industry rivals' SEO performance, paid ads, website strategies, content marketing, and digital presence—so you can outperform them with confidence.
 
 What Is Competitor Analysis?
 
-Competitor analysis is a strategic process of researching and evaluating your competitors’ strengths, weaknesses, marketing strategies, SEO rankings, and customer engagement methods.
+Competitor analysis is a strategic process of researching and evaluating your competitors' strengths, weaknesses, marketing strategies, SEO rankings, and customer engagement methods.
 
 At IHO Digital – Competitor Analysis Experts in Noida & Delhi NCR, we help you:
 
@@ -422,15 +410,11 @@ Why Choose IHO Digital for Competitor Analysis in Delhi NCR?
 - Transparent reporting & consultation
 - Experienced digital marketing professionals
 
-We don’t just analyze competitors—we help you build winning strategies based on real market data.
+We don't just analyze competitors—we help you build winning strategies based on real market data.
 
 Get Professional Competitor Analysis Services Today
 
-If you’re searching for a reliable Competitor Analysis Company in Delhi NCR or Noida, IHO Digital is ready to help. Gain deep insights into your industry, discover new growth opportunities, and build powerful strategies that put you ahead of your competitors.`,
-    features: ["Keyword Gap Analysis", "Ranking Comparison", "Ad Strategy Review", "UX Evaluation"],
-    icon: Search,
-    color: "orange",
-    category: "Digital Marketing"
+If you're searching for a reliable Competitor Analysis Company in Delhi NCR or Noida, IHO Digital is ready to help. Gain deep insights into your industry, discover new growth opportunities, and build powerful strategies that put you ahead of your competitors.`
   },
   {
     id: "technical-seo",
@@ -439,7 +423,7 @@ If you’re searching for a reliable Competitor Analysis Company in Delhi NCR or
     category: "Digital Marketing",
     desc: "Optimize backend structure, speed, and indexing for better search engine performance.",
     color: "indigo",
-    img: "/img/Services/imgi_8_69390d3cbb6ee.webp",
+    img: "/img/Services/Technical SEO.png",
     features: [
       "Website Speed Optimization",
       "Mobile Responsiveness",
@@ -554,7 +538,7 @@ Looking for a reliable Technical SEO Agency in Delhi NCR or Noida? IHO Digital p
     category: "Digital Marketing",
     desc: "Data-driven campaigns to generate instant visibility, quality leads, and measurable ROI.",
     color: "orange",
-    img: "/img/Services/istockphoto-1209989349-612x612.jpg",
+    img: "/img/Services/PAY PER CLICK.png",
     features: [
       "Instant Visibility",
       "Targeted Traffic",
@@ -713,7 +697,7 @@ At IHO Digital, we bring strategy, expertise, and data together to create PPC ca
     category: "Digital Marketing",
     desc: "Highly targeted ad campaigns to boost engagement, reach, and sales on Facebook.",
     color: "blue",
-    img: "/img/Services/imgi_5_smo-banner.webp",
+    img: "/img/Services/FB ADS.png",
     features: [
       "Precise Audience Targeting",
       "High Engagement Rates",
@@ -810,7 +794,7 @@ IHO Digital is a trusted Facebook advertising agency near you, providing high-pe
     category: "Digital Marketing",
     desc: "B2B marketing strategies to connect with decision-makers and generate high-quality leads.",
     color: "cyan",
-    img: "/img/Services/istockphoto-1149665331-612x612.jpg",
+    img: "/img/Services/LinkedIn Marketing.png",
     features: [
       "Professional Networking",
       "B2B Lead Generation",
@@ -914,7 +898,7 @@ Looking for a reliable LinkedIn Marketing Agency in Delhi NCR or Noida? Partner 
     category: "Digital Marketing",
     desc: "Strategic SMO solutions to improve visibility, engagement, and conversions across platforms.",
     color: "purple",
-    img: "/img/Services/imgi_2_SOCIAL ENGINE MARKETING (1) (2).jpg",
+    img: "/img/Services/Social Media Optimization (SMO).png",
     features: [
       "Increased Brand Visibility",
       "Better Engagement",
@@ -1041,7 +1025,7 @@ We are a leading SMM company in Noida known for creativity, results-driven strat
     id: "display-advertising",
     title: "Display Advertising",
     desc: "Visually engaging banner ads and remarketing campaigns to build brand awareness.",
-    img: "/img/Services/istockphoto-1344197355-612x612.jpg",
+    img: "/img/Services/Display Advertising.png",
     fullDescription: `High-Performance Display Advertising Services – Creative Ad Campaigns by IHO Digital
 
 In today’s competitive digital market, visual advertising plays a major role in building brand awareness and attracting potential customers. At IHO Digital, we provide result-oriented Display Advertising Services in Delhi NCR & Noida designed to help businesses reach targeted audiences through visually engaging banner ads, remarketing campaigns, and strategic placements across high-traffic websites and platforms.
@@ -1134,7 +1118,7 @@ Looking for a reliable Display Advertising Agency in Delhi NCR or Noida? Partner
     category: "Digital Marketing",
     desc: "High-quality, SEO-optimized content strategies to attract, educate, and engage your audience.",
     color: "green",
-    img: "/img/Services/istockphoto-1181340052-612x612.jpg",
+    img: "/img/Services/Content Marketing.png",
     features: [
       "SEO-Optimized Content",
       "Engaging Storytelling",
@@ -1247,7 +1231,7 @@ Looking for a trusted Content Marketing Agency in Delhi NCR or Noida? Partner wi
     category: "Digital Marketing",
     desc: "Thoughtful, data-backed email campaigns to nurture leads and build customer relationships.",
     color: "teal",
-    img: "/img/Services/imgi_3_SOCIAL ENGINE MARKETING-1.jpg",
+    img: "/img/Services/Email Marketing.png",
     features: [
       "Personalized Campaigns",
       "Automated Workflows",
@@ -1387,7 +1371,7 @@ Let’s create email campaigns that feel personal, perform consistently, and sup
     id: "video-marketing",
     title: "Video Marketing",
     desc: "Strategic, engaging, and SEO-optimized video campaigns to increase visibility and conversions.",
-    img: "/img/Services/istockphoto-1346608924-612x612.webp",
+    img: "/img/Services/Video Marketing.png",
     fullDescription: `Video Marketing Services– High-Impact Video Strategies by IHO Digital
 
 In today’s fast-moving digital world, video content has become one of the most powerful tools for brand promotion and audience engagement. At IHO Digital, we provide professional Video Marketing Services in Delhi NCR & Noida designed to help businesses increase visibility, attract the right audience, and drive real business growth.
@@ -1492,7 +1476,7 @@ Looking for a trusted Video Marketing Agency in Delhi NCR? Partner with IHO Digi
     category: "Digital Marketing",
     desc: "Optimize online presence to rank higher in Google Maps and attract nearby customers.",
     color: "red",
-    img: "/img/Services/Email Marketing.jpg",
+    img: "/img/Services/SEO.png",
     features: [
       "Google My Business Optimization",
       "Local Citation Building",
@@ -1596,7 +1580,7 @@ Looking for a reliable Local SEO Company? Partner with IHO Digital to increase y
     id: "keyword-research",
     title: "Keyword Research",
     desc: "Identify high-intent, high-value keywords to rank higher and attract the right audience.",
-    img: "/img/Services/istockphoto-1722018525-612x612.jpg",
+    img: "/img/Services/Keyword Research.png",
     fullDescription: `Keyword Research Services – Find the Right Keywords with IHO Digital
 
 Choosing the right keywords is the foundation of every successful digital marketing strategy. At IHO Digital, we provide professional Keyword Research Services in Delhi NCR & Noida designed to help businesses rank higher, attract the right audience, and increase organic traffic.
@@ -1695,7 +1679,7 @@ Looking for a trusted Keyword Research Company? Partner with IHO Digital to disc
     id: "conversion-tracking",
     title: "Conversion Tracking",
     desc: "Monitor user actions, measure ROI, and optimize marketing performance with precision.",
-    img: "/img/Services/istockphoto-1790782514-612x612.jpg",
+    img: "/img/Services/Conversion Tracking.jpeg",
     fullDescription: `Advanced Conversion Tracking Services – Measure Real Marketing Results with IHO Digital
 
 Understanding what works in your digital marketing campaigns is essential for business growth. At IHO Digital, we provide professional Conversion Tracking Services in Delhi NCR & Noida designed to help businesses monitor user actions, measure ROI, and optimize marketing performance.
@@ -1791,71 +1775,97 @@ Looking for a trusted Conversion Tracking Company? Partner with IHO Digital to m
     color: "green",
     category: "Digital Marketing"
   },
-  {
+ {
     id: "backlink-building",
     title: "Backlink Building",
     icon: Link,
     category: "Digital Marketing",
-    desc: "High-quality, safe, and powerful backlinks to improve domain authority and ranking.",
-    color: "indigo",
-    img: "/img/Services/istockphoto-1209989349-612x612.jpg",
+    color: "purple", // Kept 'purple' from your duplicate key, change to 'indigo' if preferred
+    img: "/img/Services/Backlink Building.png",
+    desc: "Secure high-quality, niche-relevant, and safe backlinks to skyrocket your domain authority and dominate search engine rankings.",
     features: [
-      "High-Quality Links",
-      "Improved Domain Authority",
-      "White-Hat Practices",
-      "Niche-Relevant Links",
-      "Sustainable Growth"
+      "High-Authority Guest Posting",
+      "Niche-Relevant Link Placements",
+      "100% White-Hat & Ethical Practices",
+      "Improved Domain Authority (DA/DR)",
+      "Local Business Citations",
+      "Toxic Link Auditing & Removal",
+      "Sustainable Organic Growth"
     ],
     fullDescription: `Premium Backlink-Building Service by IHO Digital
 
-Improve your SEO with custom backlink-building. We focus on quality and relevancy to ensure sustainable organic growth for your business.
+Elevate your SEO strategy with our bespoke backlink-building campaigns. At IHO Digital, we focus strictly on quality, relevance, and authority to ensure sustainable organic growth for your business in competitive search landscapes.All backlinks are earned through 100% clean, white-hat, and ethical practices, ensuring long-term results that are completely safe from search engine algorithm penalties. Backlinks remain one of the most critical ranking factors for search engines, acting as digital 'votes of confidence' that signal trust and industry authority. 
 
-We build high-quality, safe, and powerful backlinks to improve your domain authority and ranking strength. Our link-building includes:
+We build high-quality, safe, and powerful backlinks designed to significantly improve your domain authority and ranking strength. Our comprehensive link-building ecosystem includes:
 
-- Guest posts
-- Business citations
-- Authority backlinks
-- Brand mentions
+- High-Authority Guest Posts
+- Targeted Business Citations & Directory Submissions
+- Editorial Placements & Authority Backlinks
+- Unlinked Brand Mentions & PR Outreach
+- Broken Link Building
 
-All backlinks are earned through clean and ethical practices, ensuring long-term results. Backlinks are a critical ranking factor for search engines, signaling trust and authority. By securing links from reputable sources within your industry, we help boost your website's credibility and search engine visibility.`,
-    features: ["Guest Posting", "Business Citations", "Authority Links", "Ethical Practices"],
-    icon: Link,
-    color: "purple",
-    category: "Digital Marketing"
+All backlinks are earned through 100% clean, white-hat, and ethical practices, ensuring long-term results that are completely safe from search engine algorithm penalties. 
+
+Backlinks remain one of the most critical ranking factors for search engines, acting as digital 'votes of confidence' that signal trust and industry authority. By securing contextual links from reputable, high-traffic sources within your specific niche, we help boost your website's credibility, drive targeted referral traffic, and maximize your search engine visibility.`
   },
-  {
+ {
     id: "seo-consulting",
-    title: "SEO Consulting",
-    desc: "Expert guidance on SEO strategy, algorithm updates, and long-term growth.",
-    img: "/img/Services/istockphoto-2123095277-612x612.jpg",
-    fullDescription: `Strategic SEO-Consulting Solutions by IHO Digital
+    title: "SEO Consulting Services",
+    desc: "Expert SEO consulting to guide your internal teams, audit your strategies, and accelerate your organic growth.",
+    category: "Digital Marketing",
+    color: "purple", 
+    img: "/img/Services/SEO Consulting.png",
+    features: [
+      "Custom Strategy Development",
+      "In-depth Technical Audits",
+      "Team Training & Workshops",
+      "Algorithm Drop Recovery",
+      "Competitor Analysis",
+      "Content Strategy Roadmaps"
+    ],
+    fullDescription: `Expert SEO Consulting Services – IHO Digital
+Are you struggling to break through the organic search ceiling? Have you experienced a sudden drop in traffic, or do you have an in-house marketing team that just needs expert guidance? Our tailored SEO consulting services provide the high-level strategy, deep technical insights, and actionable roadmaps required to dominate the search results.
+We do not just hand you a generic checklist and walk away. We partner with your organization to understand your unique business model, identify hidden bottlenecks, and architect a scalable organic growth engine.
 
-Unlock your website's potential with expert seo-consulting. Custom SEO roadmaps and technical advice to help you outrank competitors and grow revenue.
+Why Partner With Our SEO Consultants?
 
-Why Choose IHO Digital as Your SEO Partner?
+Bespoke Strategy Formulation
+We design customized SEO strategies aligned perfectly with your unique business goals, target audience, and competitive market dynamics.
 
-- Proven SEO results for multiple industries
-- 100% white-hat techniques
-- Fully customized SEO strategies
-- Transparent monthly reporting
-- Up-to-date with Google algorithm changes
-- Dedicated support team
-- Affordable and flexible SEO plans
+Advanced Technical Troubleshooting
+We identify and resolve complex technical roadblocks—from JavaScript rendering issues to crawl budget waste—that are silently holding back your search visibility.
 
-As a top SEO company in Noida, we are committed to delivering real growth and measurable results. Whether you're looking for premium SEO or affordable SEO packages in India, we provide solutions that help your business achieve long-term success. Our consulting services analyze your current standing and provide a clear roadmap to dominate your niche.`,
-    features: ["Custom Strategies", "Algorithm Updates", "Performance Review", "Growth Roadmap"],
-    icon: LineChart,
-    color: "orange",
-    category: "Digital Marketing"
+In-House Team Empowerment
+We upskill your internal writers, developers, and marketers through targeted workshops, providing them with the knowledge to execute SEO best practices independently.
+
+Data-Driven Roadmaps
+We translate overwhelming analytics and audit data into a clear, prioritized, and actionable step-by-step roadmap for your team to follow.
+
+Our Comprehensive Consulting Process:
+Initial Discovery and Business Goal Alignment
+Deep-Dive Technical, On-Page, and Off-Page Auditing
+Extensive Competitive Landscape Analysis
+Strategic Roadmap Creation and Prioritization
+Ongoing Mentorship, Implementation QA, and Performance Review
+
+Areas of Specialized Expertise:
+- Enterprise-level Website Migrations and Redesigns
+- Google Algorithm Penalty Recovery and Diagnosis
+- International and Multilingual SEO Strategies
+- Large-Scale E-commerce SEO and Taxonomy Optimization
+- Content Gap Analysis and Authority Building
+- Core Web Vitals and Page Experience Optimization
+
+Ready to take control of your organic search performance? Whether you are planning a massive website migration, trying to recover from a sudden drop in traffic, or simply need an expert pair of eyes to validate your strategy, IHO Digital's SEO consulting provides the clarity, direction, and proven expertise you need to scale.`
   },
   {
     id: "google-ads-management",
     title: "Google Ads Management",
     desc: "Professional management to generate high-quality leads and maximize ROI.",
-    img: "/img/Services/istockphoto-2150109091-612x612.jpg",
+    img: "/img/Services/Google Ads Management.png",
     fullDescription: `Best Google Ads Management Company in Noida | IHO Digital
 
-Boost your ROI with expert Google Ads Management Services in Noida & Delhi NCR by IHO Digital. Get high-converting PPC campaigns, targeted traffic & measurable growth.
+Boost your ROI with expert Google Ads Management Services in Noida & Delhi NCR by IHO Digital. Get high-converting PPC campaigns, targeted traffic & measurable growth.We focus on creating targeted advertising campaigns that attract customers who are actively searching for your services. Our Google Ads Services Include Keyword Research & Competitor Analysis We find high-intent keywords that bring real conversions for your business. Campaign Setup & Optimization Our team builds structured campaigns with optimized ad groups and targeting. 
 
 Google Ads Management Services in Noida & Delhi NCR
 
@@ -1920,7 +1930,7 @@ Looking for reliable Google Ads Management Services in Noida or Delhi NCR? Partn
     category: "Digital Marketing",
     desc: "Creative strategies to grow brand presence, engagement, and leads on Instagram.",
     color: "pink",
-    img: "/img/Services/istockphoto-1223538653-612x612.jpg",
+    img: "/img/Services/Instagram Marketing.png",
     features: [
       "Visual Content Strategy",
       "Story & Reel Marketing",
@@ -2017,7 +2027,7 @@ IHO Digital is a trusted Instagram marketing agency near you offering result-dri
     id: "youtube-advertising",
     title: "YouTube Advertising",
     desc: "Targeted video ad campaigns to reach audiences and drive conversions on YouTube.",
-    img: "/img/Services/istockphoto-2159893092-612x612.jpg",
+    img: "/img/Services/YouTube Advertising.png",
     fullDescription: `YouTube Ads Agency Delhi NCR – IHO Digital
 
 IHO Digital offers professional YouTube advertising services in Noida and Delhi NCR designed to help businesses reach highly targeted audiences through engaging video campaigns. With billions of users watching videos daily, YouTube has become one of the most powerful platforms for brand promotion, lead generation, and online sales.
@@ -2105,10 +2115,10 @@ IHO Digital is a trusted YouTube advertising company near you providing high-per
     id: "remarketing-campaigns",
     title: "Remarketing Campaigns",
     desc: "Reconnect with past visitors to increase conversions and improve ROI.",
-    img: "/img/Services/istockphoto-2170102692-612x612.jpg",
+    img: "/img/Services/Remarketing Campaigns.png",
     fullDescription: `Remarketing Agency Delhi NCR – IHO Digital
 
-IHO Digital is a trusted remarketing agency in Noida and Delhi NCR helping businesses reconnect with visitors who have previously interacted with their website or brand. Many potential customers leave a website without taking action — remarketing campaigns allow you to target those users again and turn missed opportunities into conversions.
+IHO Digital is a trusted remarketing agency in Noida and Delhi NCR helping businesses reconnect with visitors who have previously interacted with their website or brand. Many potential customers leave a website without taking action — remarketing campaigns allow you to target those users again and turn missed opportunities into conversions. Remarketing is a digital advertising strategy that shows targeted ads to users who have already visited your website, watched your videos, or interacted with your brand online. These campaigns run across platforms such as Google Ads, Display Network, YouTube, Facebook, and Instagram.
 
 If you are searching for the best remarketing services near me or a reliable remarketing company in Delhi NCR, IHO Digital provides data-driven and performance-focused remarketing strategies designed to increase conversions, improve engagement, and maximize ROI.
 
@@ -2194,7 +2204,7 @@ IHO Digital is a leading remarketing agency near you that helps businesses conve
     id: "affiliate-marketing",
     title: "Affiliate Marketing",
     desc: "Performance-based marketing strategies to expand reach and increase revenue.",
-    img: "/img/Services/istockphoto-2192109016-612x612.webp",
+    img: "/img/Services/Affiliate Marketing.png",
     fullDescription: `Best Affiliate Marketing Company in Noida – IHO Digital
 
 IHO Digital is a trusted affiliate marketing company in Noida & Delhi NCR helping businesses increase revenue and brand reach through performance-based marketing strategies. Affiliate marketing allows you to collaborate with partners who promote your products or services, driving targeted traffic and sales while paying only for results.
@@ -2270,7 +2280,7 @@ IHO Digital is a trusted affiliate marketing agency near you providing result-or
     id: "blog-writing",
     title: "Blog Writing",
     desc: "High-quality, engaging, and SEO-friendly blog content to establish brand authority.",
-    img: "/img/Services/istockphoto-2217741484-612x612.jpg",
+    img: "/img/Services/Blog Writing.png",
     fullDescription: `Best Blog Writing Services in Noida – IHO Digital
 
 IHO Digital is a trusted blog writing company in Noida & Delhi NCR that helps businesses create high-quality, engaging, and SEO-friendly blog content. Well-written blogs not only improve website traffic and search engine rankings but also establish your brand as an authority in your industry.
@@ -2347,6 +2357,7 @@ IHO Digital is a trusted blog writing agency near you offering high-quality cont
     id: "newsletter-campaigns",
     title: "Newsletter Campaigns",
     desc: "Targeted email newsletters to engage subscribers, nurture leads, and drive conversions.",
+    img: "/img/Services/Newsletter Campaigns.png",
     fullDescription: `Best Newsletter Campaign Services in Noida – IHO Digital
 
 IHO Digital is a trusted newsletter campaign company in Noida & Delhi NCR helping businesses engage their audience, nurture leads, and boost conversions through targeted email newsletters. Newsletters are a cost-effective way to communicate directly with your subscribers, build relationships, and keep your brand top-of-mind.

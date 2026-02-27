@@ -229,7 +229,7 @@ At IHO Digital, we help businesses take control of their digital presence with p
     category: "Web Services",
     desc: "Ensure your website looks and performs perfectly on every screen with our mobile-first responsive design services.",
     color: "indigo",
-    img: "/img/Services/responsive website design.jpg",
+    img: "/img/Services/Responsive Website.png",
     features: [
       "Mobile-First User Experience",
       "Better Search Engine Rankings",
@@ -327,7 +327,7 @@ At IHO Digital, we help brands create responsive websites that look great, load 
     category: "Web Services",
     desc: "Transform your creative designs into clean, responsive, and pixel-perfect HTML websites with our expert conversion services.",
     color: "orange",
-    img: "/img/Services/App development.webp",
+    img: "/img/Services/PSD to HTML Design.png",
     features: [
       "Pixel-Perfect Design Conversion",
       "Fully Responsive Layouts",
@@ -401,7 +401,7 @@ We follow industry best practices to ensure your website is scalable, maintainab
     category: "Web Services",
     desc: "Increase engagement and conversion rates with professional, mobile-friendly, and brand-consistent email templates.",
     color: "teal",
-    img: "/img/Services/Email Marketing.jpg",
+    img: "/img/Services/Email Marketing.png",
     features: [
       "Better Engagement & Click Rates",
       "Mobile-Friendly Experience",
@@ -485,7 +485,7 @@ Our services are ideal for:
     category: "Web Services",
     desc: "Build scalable online marketplaces where multiple sellers can register, manage products, and sell seamlessly.",
     color: "blue",
-    img: "/img/Services/istockphoto-542107030-612x612.webp",
+    img: "/img/Services/MUTLIE VANDER WEBSITE.png",
     features: [
       "Multiple Revenue Streams",
       "Scalable Business Model",
@@ -578,7 +578,7 @@ At IHO Digital, we help businesses turn ideas into profitable marketplaces with 
     category: "Web Services",
     desc: "Communicate your brand message clearly and build long-term trust with a structured, user-friendly informative website.",
     color: "sky",
-    img: "/img/Services/imgi_6_web-development.webp",
+    img: "/img/Services/Custom Website Development.png",
     features: [
       "Builds Trust & Credibility",
       "Improves User Experience",
@@ -659,7 +659,7 @@ At IHO Digital, we help businesses build strong online credibility through profe
     category: "Web Services",
     desc: "Ensure your website runs smoothly 24/7 with regular updates, security checks, and performance optimization.",
     color: "slate",
-    img: "/img/Services/imgi_8_69390d3cbb6ee.webp",
+    img: "/img/Services/Website Maintenance.png",
     features: [
       "Website Security & Protection",
       "Improved Performance & Speed",
@@ -849,7 +849,7 @@ At IHO Digital, we help businesses stay protected with professional website secu
     category: "Web Services",
     desc: "Get full control and flexibility with a tailor-made CMS built specifically around your business workflows.",
     color: "violet",
-    img: "/img/Services/imgi_636_ms-cms-web-development.png",
+    img: "/img/Services/CMS Development.png",
     features: [
       "Tailored to Your Business Needs",
       "Better Performance & Security",
@@ -942,7 +942,7 @@ At IHO Digital, we help businesses take control of their digital content with po
     category: "Web Services",
     desc: "Automate processes and improve data flow by seamlessly connecting your website with third-party tools and services.",
     color: "emerald",
-    img: "/img/Services/imgi_10_69390ebaeacee.webp",
+    img: "/img/Services/API Integration.png",
     features: [
       "Process Automation",
       "Improved Efficiency & Accuracy",
@@ -1033,7 +1033,7 @@ At IHO Digital, we help businesses streamline operations with professional API i
     category: "Web Services",
     desc: "Sell smarter and scale faster with secure, user-friendly, and high-performance online stores.",
     color: "pink",
-    img: "/img/Services/istockphoto-1344197355-612x612.jpg",
+    img: "/img/Services/E-commerce Development.png",
     features: [
       "24/7 Online Sales",
       "Better Customer Experience",
@@ -1125,7 +1125,7 @@ Looking for a reliable e-commerce development company in Delhi NCR or Noida? IHO
     category: "Web Services",
     desc: "Build a strong digital presence from day one with modern, scalable websites designed for startups.",
     color: "indigo",
-    img: "/img/Services/imgi_1_premium_photo-1720287601300-cf423c3d6760.jpg",
+    img: "/img/Services/Startup Website Design.jpg",
     features: [
       "Strong First Impression",
       "Better Brand Identity",
@@ -1198,7 +1198,7 @@ Looking for a reliable startup website design company in Delhi NCR or Noida? Let
     category: "Web Services",
     desc: "Powerful, flexible websites that allow easy content management and real-time updates for growing businesses.",
     color: "cyan",
-    img: "/img/Services/imgi_2_SOCIAL ENGINE MARKETING (1) (2).jpg",
+    img: "/img/Services/Dynamic Website.png",
     features: [
       "Easy Content Management",
       "Better User Experience",
@@ -1279,7 +1279,7 @@ If you’re searching for a reliable dynamic website design company in Delhi NCR
     category: "Web Services",
     desc: "Refresh your online presence with a modern redesign that improves user experience, speed, and conversions.",
     color: "green",
-    img: "/img/Services/imgi_3_SOCIAL ENGINE MARKETING-1.jpg",
+    img: "/img/Services/Website Redesigning.png",
     features: [
       "Improve User Experience",
       "Boost Search Engine Rankings",
@@ -1352,7 +1352,7 @@ If you’re looking for a reliable website redesigning company in Delhi NCR or N
     category: "Web Services",
     desc: "Streamline operations and improve customer engagement with custom, scalable, and secure CRM solutions.",
     color: "blue",
-    img: "/img/Services/imgi_5_smo-banner.webp",
+    img: "/img/Services/CRM Development.png",
     features: [
       "Centralized Customer Data",
       "Automate Sales & Marketing",
@@ -1424,7 +1424,7 @@ If you’re looking for a reliable CRM development company in Delhi NCR or Noida
     category: "Web Services",
     desc: "Enhance user experience and search rankings with a website that looks and performs perfectly on all devices.",
     color: "purple",
-    img: "/img/Services/Mobile friendly.jpg",
+    img: "/img/Services/MOBILE FREINDLY.png",
     features: [
       "Improve User Experience",
       "Boost Search Engine Rankings",
@@ -1491,7 +1491,7 @@ If you’re looking for a reliable mobile-friendly website design company in Del
     category: "Web Services",
     desc: "Generate leads and increase conversions with visually appealing and focused landing pages.",
     color: "orange",
-    img: "/img/Services/imgi_10_saas-development.webp",
+    img: "/img/Services/LANDING PAGE.png",
     features: [
       "Higher Conversion Rates",
       "Clear Call-to-Actions",
@@ -1554,7 +1554,7 @@ If you’re looking for a reliable landing page design company in Delhi NCR or N
     category: "Web Services",
     desc: "Stand out with a secure, scalable, and high-performance website built specifically for your business needs.",
     color: "sky",
-    img: "/img/Services/imgi_29_saas.webp",
+    img: "/img/Services/Custom Website Development.png",
     features: [
       "Unique Branding & Design",
       "Scalability & Flexibility",
@@ -1618,7 +1618,7 @@ If you’re looking for a reliable custom website development company in Delhi N
     category: "Web Services",
     desc: "Present your company's vision and achievements with a polished, impactful, and professional business profile.",
     color: "rose",
-    img: "/img/Services/imgi_49_Whyctr-predicts-financial-efficiency-in-digital-marketing.webp",
+    img: "/img/Services/Business Profile Design.png",
     features: [
       "Build Brand Credibility",
       "Showcase Services & Achievements",
@@ -1680,7 +1680,7 @@ If you’re looking for a reliable business profile design company in Delhi NCR 
     category: "Web Services",
     desc: "Showcase your work, skills, and achievements with a visually stunning and SEO-friendly portfolio website.",
     color: "fuchsia",
-    img: "/img/Services/imgi_50_Agentic-SEO-How-AI-Agents-Are-Changing-SEO-Workflows.webp",
+    img: "/img/Services/BUSSINESS PORTFOLIO.png",
     features: [
       "Showcase Your Work Professionally",
       "Build Credibility",
@@ -1756,7 +1756,7 @@ If you’re looking for a reliable portfolio website design company in Delhi NCR
     category: "Web Services",
     desc: "Enhance speed, user experience, and search engine rankings with our expert website performance services.",
     color: "yellow",
-    img: "/img/Services/imgi_631_1_5IYtIe5OwxeoYXi226J-Uw-1.jpg",
+    img: "/img/Services/Performance Optimization.png",
     features: [
       "Improve User Experience",
       "Boost Search Engine Rankings",
@@ -1824,7 +1824,7 @@ If you’re looking for a reliable website performance optimization company in D
     category: "Web Services",
     desc: "Streamline online sales with a fast, reliable, and user-friendly e-commerce cart system.",
     color: "teal",
-    img: "/img/Services/istockphoto-1149665331-612x612.jpg",
+    img: "/img/Services/QuickCart Development.png",
     features: [
       "Faster Checkout Process",
       "Enhanced User Experience",
@@ -1901,7 +1901,7 @@ If you’re looking for a reliable QuickCart development company in Delhi NCR or
     category: "Web Services",
     desc: "Optimize workflows, centralize data, and improve efficiency with custom ERP solutions tailored to your business.",
     color: "blue",
-    img: "/img/Services/ERP Development.webp",
+    img: "/img/Services/ERP Development.png",
     features: [
       "Centralized Management",
       "Improved Operational Efficiency",

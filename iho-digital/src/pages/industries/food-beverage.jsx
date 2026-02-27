@@ -1,29 +1,28 @@
-import React, { useEffect, useRef, useState, useMemo } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import SEO from "../../components/SEO.jsx";
 import { Link } from 'react-router-dom';
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { 
   ChevronRight, CheckCircle2, 
-  Rocket, Home, Layers, ArrowRight, Mail as MailIcon
+  Rocket, Home, ArrowRight, Mail as MailIcon,
+  Sparkles, Star, Grid, ArrowLeft, ChevronDown
 } from 'lucide-react';
-import { Utensils } from 'lucide-react';
 
-// --- 1. THEME PALETTE ---
+// --- 1. THEME PALETTE (Warm Orange/Red for Food) ---
 const themePalette = {
   orange: { 
-    gradient: "from-orange-950 via-slate-900 to-black", 
-    accent: "bg-orange-600", 
+    gradient: "from-[#050510] via-[#0a0a1a] to-[#050510]", 
+    accent: "bg-[#ea580c]", 
     text: "text-orange-400", 
-    border: "border-orange-500/30",
-    glow: "bg-orange-500/20",
-    hex: "#f97316",
-    titleGradient: "from-orange-300 via-orange-500 to-amber-400"
+    border: "border-orange-500/20",
+    hex: "#ea580c",
+    titleGradient: "from-[#fb923c] via-[#ea580c] to-[#c2410c]"
   }
 };
 
 const theme = themePalette.orange;
 
-// --- 2. TILT HEADING COMPONENT ---
+// --- 2. GLOWING TILT HEADING COMPONENT ---
 const TiltHeading = ({ text, theme }) => {
   const ref = useRef(null);
   const x = useMotionValue(0);
@@ -48,273 +47,102 @@ const TiltHeading = ({ text, theme }) => {
       style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
       className="perspective-1000 inline-block cursor-default py-4 relative z-10"
     >
-      <motion.h2 
-        style={{ transform: "translateZ(30px)" }}
-        className={`text-4xl md:text-5xl lg:text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r ${theme.titleGradient} uppercase leading-tight drop-shadow-2xl text-center tracking-tight`}
+      <motion.h1 
+        style={{ transform: "translateZ(30px)", dropShadow: "0px 10px 30px rgba(234,88,12,0.5)" }}
+        className={`text-6xl md:text-8xl lg:text-9xl font-black text-transparent bg-clip-text bg-gradient-to-r ${theme.titleGradient} tracking-tight`}
       >
         {text}
-      </motion.h2>
-      <div className={`absolute inset-0 ${theme.glow} blur-[120px] opacity-60 -z-10 animate-pulse`} />
-      <div className={`absolute inset-0 ${theme.glow} blur-[200px] opacity-30 -z-20`} />
+      </motion.h1>
+      <div className={`absolute inset-0 bg-orange-500/30 blur-[100px] opacity-80 -z-10 animate-pulse`} />
+      <div className={`absolute inset-0 bg-red-500/20 blur-[150px] opacity-50 -z-20`} />
     </motion.div>
   );
 };
 
-// --- 3. CONTENT PARSER ---
+// --- 3. CONTENT PARSER (Full Width) ---
 const ContentParser = ({ blocks, theme }) => {
   if (!blocks || blocks.length === 0) return null;
 
-  // Helper function to detect if a line is a short feature heading
   const isShortFeatureHeading = (line, nextLine) => {
     const trimmed = line.trim();
     const words = trimmed.split(/\s+/);
-    
-    // STRICT FIX: Limit to 3 words max to prevent normal sentences from becoming cards.
-    // "Static websites are perfect for" is 5 words -> will NOT be a card.
-    // Also exclude simple list items that appear after section headings
-    if (
-      words.length >= 1 && 
-      words.length <= 3 && 
-      !trimmed.endsWith('.') && 
-      !trimmed.endsWith(',') &&
-      !trimmed.endsWith(';') &&
-      !trimmed.endsWith('?') &&
-      !trimmed.endsWith(':') &&
-      nextLine && 
-      nextLine.trim().length > 0 &&
-      !nextLine.trim().startsWith('-') &&
-      // If next line is also short without punctuation, it's likely a list, not a feature
-      !(nextLine.trim().split(/\s+/).length <= 5 && !nextLine.trim().endsWith('.'))
-    ) {
-      return true;
-    }
-    return false;
-  };
-
-  // Helper to detect if lines after a heading are simple list items
-  const isSimpleListSequence = (lines, startIndex) => {
-    if (startIndex >= lines.length) return false;
-    
-    // Check if next 2-3 lines are short (1-6 words) without ending punctuation
-    let listItemCount = 0;
-    for (let i = startIndex; i < Math.min(startIndex + 5, lines.length); i++) {
-      const line = lines[i].trim();
-      const words = line.split(/\s+/);
-      if (words.length <= 6 && !line.endsWith('.') && !line.endsWith('?') && !line.endsWith(':')) {
-        listItemCount++;
-      } else {
-        break;
-      }
-    }
-    return listItemCount >= 2; // At least 2 consecutive short items = list
-  };
-
-  // Helper function to detect if a line is a section heading (? or :)
-  const isSectionHeading = (line) => {
-    const trimmed = line.trim();
-    return trimmed.endsWith('?') || trimmed.endsWith(':');
-  };
-
-  // Helper function to detect if a line is a company/service subheading (first subheading)
-  const isCompanySubheading = (line, isFirstInBlock) => {
-    const trimmed = line.trim();
-    const words = trimmed.split(/\s+/);
-    // Detect patterns like "Best Services – IHO Digital"
-    if (
-      isFirstInBlock &&
-      (trimmed.includes('– IHO Digital') || 
-       trimmed.includes('- IHO Digital') ||
-       (trimmed.includes('Company') && words.length < 20 && !trimmed.endsWith('.')) ||
-       (trimmed.includes('Services') && words.length < 20 && !trimmed.endsWith('.')) ||
-       (trimmed.includes('Solutions') && words.length < 20 && !trimmed.endsWith('.')))
-    ) {
-      return true;
-    }
-    return false;
+    return (
+      words.length >= 1 && words.length <= 3 && 
+      !trimmed.endsWith('.') && !trimmed.endsWith(',') && !trimmed.endsWith(';') && !trimmed.endsWith('?') && !trimmed.endsWith(':') &&
+      nextLine && nextLine.trim().length > 0 && !nextLine.trim().startsWith('-')
+    );
   };
 
   const processedBlocks = [];
   blocks.forEach((block, blockIndex) => {
-    if (block.includes('•') || block.trim().startsWith('-')) {
-      processedBlocks.push({ type: 'bullets', content: block });
-      return;
-    }
-
     const lines = block.split('\n').filter(line => line.trim().length > 0);
     let i = 0;
-    
     while (i < lines.length) {
       const line = lines[i].trim();
       const nextLine = i < lines.length - 1 ? lines[i + 1].trim() : null;
-      const isFirstLine = blockIndex === 0 && i === 0;
+
+      if (line.startsWith('-') || line.startsWith('•')) {
+        const listItems = [];
+        while (i < lines.length && (lines[i].trim().startsWith('-') || lines[i].trim().startsWith('•'))) {
+          listItems.push(lines[i].trim().replace(/^[-•]\s*/, ''));
+          i++;
+        }
+        processedBlocks.push({ type: 'card_list', items: listItems });
+        continue;
+      }
       
-      if (isCompanySubheading(line, isFirstLine)) {
-        processedBlocks.push({ type: 'company_subheading', content: line });
+      if (line.endsWith('?') || line.endsWith(':') || line.match(/^\d+\.\s/)) {
+        processedBlocks.push({ type: 'section_heading', content: line.replace(/^\d+\.\s*/, '') });
         i++;
+        continue;
       }
-      else if (isSectionHeading(line)) {
-        if (isSimpleListSequence(lines, i + 1)) {
-          const listItems = [line];
-          i++;
-          while (i < lines.length) {
-            const itemLine = lines[i].trim();
-            const words = itemLine.split(/\s+/);
-            if (words.length <= 6 && !itemLine.endsWith('.') && !itemLine.endsWith('?') && !itemLine.endsWith(':')) {
-              listItems.push(itemLine);
-              i++;
-            } else {
-              break;
-            }
-          }
-          processedBlocks.push({ type: 'simple_list', heading: listItems[0], items: listItems.slice(1) });
-        } else {
-          processedBlocks.push({ type: 'section_heading', content: line });
-          i++;
-        }
-      }
-      else if (isShortFeatureHeading(line, nextLine)) {
-        processedBlocks.push({ 
-          type: 'feature_card', 
-          heading: line,
-          content: nextLine
-        });
+      
+      if (isShortFeatureHeading(line, nextLine)) {
+        processedBlocks.push({ type: 'feature_card', heading: line, content: nextLine });
         i += 2;
+        continue;
       }
-      else {
-        const lastItem = processedBlocks[processedBlocks.length - 1];
-        if (lastItem && lastItem.type === 'paragraph') {
-          lastItem.content += ' ' + line;
-        } else {
-          processedBlocks.push({ type: 'paragraph', content: line });
-        }
-        i++;
+      
+      const lastItem = processedBlocks[processedBlocks.length - 1];
+      if (lastItem && lastItem.type === 'paragraph') {
+        lastItem.content += ' ' + line;
+      } else {
+        processedBlocks.push({ type: 'paragraph', content: line });
       }
+      i++;
     }
   });
 
   return (
-    <div className="space-y-8 text-slate-300">
+    <div className="space-y-6 text-slate-300 relative z-10 w-full">
       {processedBlocks.map((item, index) => {
-        if (item.type === 'company_subheading') {
+        if (item.type === 'card_list') {
           return (
-            <motion.h2
-              initial={{ opacity: 0, y: -10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              key={index}
-              className={`text-2xl md:text-3xl font-extrabold ${theme.text} mb-6 leading-tight`}
-            >
-              {item.content}
-            </motion.h2>
+            <ul key={index} className="my-6 space-y-3 pl-4">
+              {item.items.map((listItem, idx) => (
+                <li key={idx} className="flex items-start gap-3">
+                  <CheckCircle2 className={`w-5 h-5 flex-shrink-0 mt-0.5 ${theme.text} drop-shadow-[0_0_8px_${theme.hex}]`} />
+                  <span className="text-base leading-relaxed text-slate-300">{listItem}</span>
+                </li>
+              ))}
+            </ul>
           );
         }
-
-        if (item.type === 'bullets') {
-          const items = item.content.split(/\n|•/).filter(line => line.trim().length > 0);
-          return (
-            <motion.div 
-              key={index}
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="my-8"
-            >
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {items.map((line, i) => (
-                  <motion.div 
-                    key={i} 
-                    whileHover={{ y: -5, backgroundColor: "rgba(255, 255, 255, 0.03)" }}
-                    className={`flex items-start gap-3 text-base text-slate-300 bg-slate-900/40 p-5 rounded-xl border border-white/5 shadow-lg backdrop-blur-sm group hover:border-orange-500/30 transition-all duration-300`}
-                  >
-                    <div className={`mt-1 p-1 rounded-full bg-white/5 ${theme.text}`}>
-                      <CheckCircle2 className="w-4 h-4" />
-                    </div>
-                    <span className="leading-relaxed group-hover:text-slate-200 transition-colors">{line.replace(/^-/, '').trim()}</span>
-                  </motion.div>
-                ))}
-              </div>
-            </motion.div>
-          );
-        }
-        
-        if (item.type === 'simple_list') {
-          return (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="my-8"
-            >
-              <h3 className={`text-2xl md:text-3xl font-extrabold ${theme.text} mb-6`}>
-                {item.heading}
-              </h3>
-              <ul className="space-y-3 ml-6">
-                {item.items.map((listItem, idx) => (
-                  <li key={idx} className="text-base md:text-lg text-slate-300/90 flex items-start gap-3">
-                    <span className={`mt-2 w-2 h-2 rounded-full ${theme.accent} flex-shrink-0`} />
-                    <span className="leading-relaxed">{listItem}</span>
-                  </li>
-                ))}
-              </ul>
-            </motion.div>
-          );
-        }
-
         if (item.type === 'section_heading') {
-          return (
-            <motion.h3 
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              key={index} 
-              className={`text-2xl md:text-3xl font-extrabold ${theme.text} mt-14 mb-6 pb-3 border-b border-white/5 inline-block`}
-            >
-              {item.content}
-            </motion.h3>
-          );
+          return <h3 key={index} className={`text-2xl md:text-3xl font-extrabold ${theme.text} mt-12 mb-4 drop-shadow-[0_0_10px_rgba(234,88,12,0.4)]`}>{item.content}</h3>;
         }
-
         if (item.type === 'feature_card') {
           return (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              whileHover={{ y: -5 }}
-              className={`relative p-6 rounded-xl bg-gradient-to-br from-white/5 to-transparent border border-white/10 hover:border-orange-500/30 shadow-lg backdrop-blur-sm group transition-all duration-300 my-6`}
-            >
-              <div 
-                className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-30 blur-xl transition-opacity duration-300"
-                style={{ background: `radial-gradient(circle at center, ${theme.hex}60, transparent 70%)` }}
-              />
-              <div className="relative z-10">
-                <h4 className={`text-xl md:text-2xl font-bold ${theme.text} mb-3 flex items-center gap-3`}>
-                  <span 
-                    className={`w-1.5 h-1.5 rounded-full ${theme.accent}`}
-                    style={{ boxShadow: `0 0 10px ${theme.hex}` }}
-                  />
-                  {item.heading}
-                </h4>
-                <p className="text-base text-slate-300/90 leading-relaxed">
-                  {item.content}
-                </p>
-              </div>
-            </motion.div>
+            <div key={index} className="my-6 p-6 bg-white/5 border border-white/10 rounded-xl shadow-[0_0_20px_rgba(234,88,12,0.1)] backdrop-blur-md">
+              <h4 className={`text-xl font-bold ${theme.text} mb-2`}>{item.heading}</h4>
+              <p className="text-slate-300 leading-relaxed">{item.content}</p>
+            </div>
           );
         }
-
         return (
-          <motion.p 
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            key={index} 
-            className="text-base md:text-lg leading-relaxed text-slate-300/90"
-          >
+          <p key={index} className="text-lg leading-relaxed text-slate-300/90 text-justify md:text-left">
             {item.content}
-          </motion.p>
+          </p>
         );
       })}
     </div>
@@ -324,192 +152,107 @@ const ContentParser = ({ blocks, theme }) => {
 // --- 4. MAIN PAGE COMPONENT ---
 const FoodBeveragePage = () => {
   const pageTitle = "Food & Beverage";
-  const pageCategory = "Industries";
-  const pageImage = "/img/Services/istockphoto-1223538653-612x612.jpg";
-  const pageDescription = "Transform restaurant & food business with digital marketing";
-  const pageFullDescription = `Best Food & Beverage Digital Marketing Services – IHO Digital
-The food and beverage industry is highly competitive, and restaurants, cafes, bars, cloud kitchens, and food brands need strong digital presence to attract hungry customers. IHO Digital provides result-driven food and beverage digital marketing services in Noida and Delhi NCR, helping food businesses increase visibility, generate more orders, and build a loyal customer base through powerful online strategies.
-Whether you run a restaurant, cafe, bar, cloud kitchen, food delivery brand, or beverage company, our tailored marketing solutions help you connect with food lovers at the right time. If you are searching for the best food and beverage digital marketing agency near me, IHO Digital delivers measurable growth with data-driven campaigns.
-Why Digital Marketing is Essential for Food & Beverage Businesses
-Customers now search for restaurants, order food online, read reviews, and compare menus on digital platforms. A strong digital presence ensures your food business appears when hungry customers search for dining options or food delivery.
-Key reasons food & beverage businesses need digital marketing:
-Increase online orders and table reservations
+  const pageCategory = "FOOD & BEVERAGE SOLUTIONS";
+  const pageDescription = "Elevate F&B business with digital presence";
 
-Build strong brand presence on social media
+  // Dropdown State
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
 
-Attract more customers through local SEO
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsDropdownOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
-Showcase menus with high-quality visuals
+  const pageFullDescription = `Grow Your Food & Beverage Business with Smart Digital Solutions
+The food and beverage industry is highly competitive and constantly evolving. From restaurants and cafes to cloud kitchens, bakeries, and beverage brands, businesses need a strong digital presence to attract customers and increase orders. At IHO Digital, we provide professional Food & Beverage website development and digital marketing services in Delhi NCR & Noida designed to help brands grow online, increase visibility, and boost sales.
 
-Get positive reviews and ratings
+As a food & beverage digital marketing agency near you, we help businesses create engaging websites, improve search engine rankings, and run high-converting advertising campaigns that attract more customers.
 
-Run targeted promotional campaigns
+Why Digital Marketing Matters for Food & Beverage Brands:
+Today's customers search online before deciding where to eat or what to order. Without a strong digital strategy, food businesses miss valuable opportunities. Our digital solutions help restaurants, cafes, and beverage companies connect with customers effectively.
 
-With professional marketing strategies, your food business can attract more customers and increase revenue.
-Our Food & Beverage Digital Marketing Services
-As a leading food and beverage marketing agency in Noida & Delhi NCR, IHO Digital offers comprehensive solutions tailored to food businesses.
-1. Restaurant Website Design & Development
-We design attractive, mobile-friendly restaurant websites with online ordering, table reservations, and menu showcases that entice customers to visit or order.
-2. Local SEO for Restaurants & Cafes
-We optimize your restaurant for local searches like:
-best restaurant near me in Noida
+Key benefits include:
 
-cafes in Delhi NCR
+- Increase online orders and reservations
+- Improve local search visibility
+- Build brand awareness and loyalty
+- Promote new menus and offers
+- Engage customers through social media
+- Generate consistent leads and revenue
 
-best biryani in Delhi NCR
+With the right marketing approach, your business can reach customers exactly when they are searching for food or dining options near them.
 
-food delivery near me
+Our Food & Beverage Digital Services in Delhi NCR & Noida:
 
-Our SEO strategies include keyword research, Google Business Profile optimization, and local citations to improve rankings and foot traffic.
-3. Google Ads & Paid Advertising
-Promote your restaurant with targeted paid ads. Our Google Ads campaigns help:
-Generate high-quality table reservations
+1. Restaurant & Food Website Design
+We design modern, responsive, and visually appealing websites that showcase your menu, brand story, and services. Our websites include online ordering systems, reservation forms, location maps, and mobile-friendly layouts to enhance user experience.
 
-Increase online food orders
+2. Local SEO for Restaurants & Food Businesses
+Our SEO strategies help your business rank higher on Google for searches like "restaurant near me," "best cafe in Noida," and "food delivery Delhi NCR." We optimize your website, Google Business Profile, and local listings to attract nearby customers.
 
-Target specific locations like Noida and Delhi NCR
+3. Social Media Marketing for Food Brands
+Food businesses thrive on visual content. We create engaging Instagram, Facebook, and YouTube campaigns that showcase your dishes, promotions, and customer experiences to build strong brand engagement.
 
-Showcase special offers and promotions
+4. Google Ads & PPC Campaigns
+Our PPC advertising services target customers searching for specific cuisines, offers, or dining locations. We create campaigns that drive website visits, calls, and online orders quickly.
 
-4. Social Media Marketing
-We manage social media platforms like Instagram, Facebook, and YouTube to:
-Showcase menu items with high-quality food photography
+5. Online Reputation & Review Management
+Customer reviews influence dining decisions. We help manage online reviews, improve ratings, and build trust through professional reputation management strategies.
 
-Share customer reviews and testimonials
+6. Food Photography & Content Marketing
+High-quality visuals and engaging content play a huge role in food marketing. Our team helps create SEO-friendly blogs, menu descriptions, and promotional content that attract and convert customers.
 
-Engage with food lovers and build community
+Benefits of Choosing IHO Digital for Food & Beverage Marketing:
 
-Run food promotions and contests
+- Professional restaurant website development
+- Local SEO strategies for Delhi NCR & Noida
+- Online ordering & booking integration
+- Targeted advertising campaigns
+- Creative social media strategies
+- Conversion-focused landing pages
+- Data-driven performance tracking
 
-Increase brand awareness in the food industry
+We help food brands not only look good online but also generate real business growth.
 
-5. Food Delivery Platform Optimization
-We help optimize your presence on Zomato, Swiggy, and other food delivery platforms to increase orders and visibility.
-6. Content Marketing & Menu Photography
-Quality content and professional food photography build appetite and trust. We create:
-Menu descriptions that sell
+Food & Beverage Businesses We Work With:
 
-Food blog posts and recipes
+- Restaurants & Fine Dining Chains
+- Cafes & Coffee Shops
+- Cloud Kitchens & Delivery Brands
+- Bakeries & Dessert Shops
+- Beverage & Juice Brands
+- Catering & Event Food Services
+- Fast Food & QSR Brands
 
-SEO-friendly landing pages
+Whether you are launching a new restaurant or scaling an established food brand, our customized digital solutions help you grow faster.
 
-Promotional content for campaigns
+Why Choose IHO Digital as Your Food Marketing Partner?
+IHO Digital understands the unique challenges of the food and beverage industry. We combine creative design, advanced SEO strategies, and targeted advertising campaigns to help your business stand out in crowded markets.
 
-Types of Food & Beverage Businesses We Serve
-IHO Digital provides specialized marketing solutions for:
-Restaurants & Fine Dining
+Our approach focuses on customer experience, mobile optimization, and conversion-driven marketing that turns visitors into loyal customers. We ensure your website loads fast, looks visually appealing, and provides a seamless ordering experience.
 
-Cafes & Coffee Shops
+Start Growing Your Food & Beverage Business with IHO Digital:
+If you are searching for the best food & beverage digital marketing and website development company in Delhi NCR or Noida, IHO Digital provides tailored solutions that help restaurants and food brands succeed online.
 
-Bars & Pubs
+From restaurant website design and SEO to social media marketing and PPC advertising, we deliver complete digital growth strategies for your business.
 
-Cloud Kitchens & Food Brands
-
-Fast Food Chains
-
-Bakeries & Dessert Shops
-
-Food Trucks & Street Food
-
-Beverage Companies & Bars
-
-Benefits of Digital Marketing for Food & Beverage Industry
-Partnering with a professional food marketing company in Delhi NCR provides:
-Higher Search Engine Rankings for Food Keywords
-
-Increased Online Orders & Table Reservations
-
-Stronger Brand Reputation
-
-Local Visibility in Noida & Delhi NCR
-
-Better Engagement with Food Lovers
-
-Measurable Marketing ROI
-
-With targeted campaigns, food businesses can attract hungry customers while maximizing marketing budgets.
-Why Choose IHO Digital – Food & Beverage Marketing Agency Near You
-IHO Digital is a trusted digital marketing company for food and beverage sector in Noida and Delhi NCR with proven expertise in generating orders and building strong food brands.
-What makes us the best choice:
-Deep Understanding of Food Industry Trends
-
-Local SEO Expertise for Delhi NCR Market
-
-Creative Food Photography & Content
-
-Data-Driven Marketing Strategies
-
-Transparent Reporting & Analytics
-
-Customized Marketing Plans for Food Businesses
-
-Our team focuses on long-term growth, helping food businesses stand out in a highly competitive online food market.
-Our Marketing Process for Food & Beverage Businesses
-Understand your restaurant goals and target audience
-
-Conduct in-depth keyword and competitor research
-
-Develop customized marketing strategies
-
-Launch SEO, social media, and paid campaigns
-
-Monitor performance and optimize regularly
-
-Provide detailed reports and continuous improvements
-
-This structured approach ensures consistent results and improved customer engagement.
-Local SEO for Restaurants in Noida & Delhi NCR
-Local SEO is essential for attracting customers searching for dining options near their location. We optimize:
-Google Business Profile listings for restaurants
-
-Location-based keywords for food searches
-
-Local citations and directories
-
-Reviews and reputation management
-
-This helps your restaurant appear in "near me" searches and local Google results.
-Cuisines We Promote
-Indian & Mughlai
-
-Italian & Mediterranean
-
-Chinese & Asian
-
-Fast Food & Burgers
-
-Biryani & Kebabs
-
-Bakery & Desserts
-
-Beverages & Coffee
-
-Partner with the Best Food & Beverage Digital Marketing Agency in Noida & Delhi NCR
-If you are looking for the best food and beverage digital marketing services near me, IHO Digital helps restaurants and food brands increase visibility, generate more orders, and build a loyal customer base through effective online strategies.
-Contact IHO Digital today to discuss your food business marketing goals and start your digital growth journey.`;
+Contact IHO Digital today and take your food & beverage brand to the next level with powerful digital solutions.`;
 
   const pageFeatures = [
-    "Restaurant Websites",
-    "Online Ordering Systems", 
+    "Restaurant Website & Ordering Systems",
     "Food Delivery Integration",
-    "Social Media Marketing",
-    "Menu Photography",
-    "Local SEO for Restaurants"
+    "Menu Management",
+    "Social Media Marketing for F&B"
   ];
 
   useEffect(() => { window.scrollTo(0, 0); }, []);
-
-  const fullText = pageFullDescription || "";
-  const allBlocks = fullText.split('\n\n');
-  
-  let introBlocks = [];
-  let mainBodyBlocks = [];
-  
-  const firstBlockLength = allBlocks[0] ? allBlocks[0].length : 0;
-  const introCount = firstBlockLength < 300 && allBlocks.length > 1 ? 2 : 1;
-  
-  introBlocks = allBlocks.slice(0, introCount);
-  mainBodyBlocks = allBlocks.slice(introCount);
+  const allBlocks = pageFullDescription.split('\n\n');
 
   const openContactModal = () => {
     window.dispatchEvent(new CustomEvent('open-contact-modal'));
@@ -518,276 +261,145 @@ Contact IHO Digital today to discuss your food business marketing goals and star
   };
 
   return (
-    <div className="min-h-screen bg-black text-slate-200 overflow-x-hidden selection:bg-white/20 selection:text-white">
-      <SEO 
-        title={`${pageTitle} - IHO Digital`} 
-        description={pageDescription}
-        canonical="/industries/food-beverage"
-      />
+    <div className="min-h-screen bg-[#050510] text-slate-200 overflow-x-hidden relative font-sans selection:bg-orange-500/30">
+      <SEO title={`${pageTitle} - IHO Digital`} description={pageDescription} canonical="/industries/food-beverage" />
 
-      {/* --- BREADCRUMB HEADER --- */}
-      <div className={`pt-28 pb-6 border-b border-white/5 bg-gradient-to-r ${theme.gradient} relative overflow-hidden`}>
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div 
-            className="absolute -top-20 -left-32 w-[900px] h-[900px] rounded-full blur-[180px] opacity-90 animate-pulse"
-            style={{ 
-              background: `radial-gradient(circle, ${theme.hex}95 0%, ${theme.hex}50 40%, transparent 70%)`
-            }} 
-          />
-          <div 
-            className="absolute top-0 -left-20 w-[800px] h-[800px] rounded-full blur-[160px] opacity-75"
-            style={{ 
-              background: `radial-gradient(circle, ${theme.hex}85 0%, ${theme.hex}40 50%, transparent 70%)`,
-              animationDelay: '0.7s'
-            }} 
-          />
-          <div 
-            className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full blur-[140px] opacity-60"
-            style={{ 
-              background: `radial-gradient(circle, ${theme.hex}70 0%, ${theme.hex}30 50%, transparent 70%)`
-            }} 
-          />
-        </div>
-        <div className="container mx-auto max-w-7xl px-6 flex items-center gap-2 text-sm opacity-80 relative z-10">
-          <Link to="/" className="hover:text-white flex items-center gap-1 transition-colors"><Home className="w-3.5 h-3.5" /> Home</Link>
-          <ChevronRight className="w-3.5 h-3.5" />
-          <Link to="/industries" className={`${theme.text} hover:text-white transition-colors`}>{pageCategory}</Link>
-          <ChevronRight className="w-3.5 h-3.5" />
-          <span className="text-slate-200">{pageTitle}</span>
-        </div>
+      {/* --- 1. LIVE ANIMATED MERGE BACKGROUND --- */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
+        <div className="absolute inset-0 bg-gradient-to-br from-[#050510] via-[#090a15] to-[#050510]" />
+        <motion.div 
+          animate={{ x: [0, 40, -20, 0], y: [0, -40, 30, 0], scale: [1, 1.1, 0.9, 1] }} 
+          transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute top-[-5%] left-[10%] w-[700px] h-[700px] rounded-full blur-[140px] opacity-[0.2]" 
+          style={{ background: `radial-gradient(circle, #ea580c 0%, transparent 70%)`, mixBlendMode: 'screen' }} 
+        />
+        <motion.div 
+          animate={{ x: [0, -50, 40, 0], y: [0, 60, -20, 0], scale: [1, 0.95, 1.05, 1] }} 
+          transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute bottom-[10%] right-[0%] w-[800px] h-[800px] rounded-full blur-[160px] opacity-[0.15]" 
+          style={{ background: `radial-gradient(circle, #c2410c 0%, transparent 70%)`, mixBlendMode: 'screen' }} 
+        />
       </div>
 
-      {/* --- MAIN LAYOUT --- */}
-      <div className="bg-gradient-to-b from-slate-900 via-black to-slate-950 py-16 relative">
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div 
-            className="absolute top-0 -left-32 w-[1200px] h-[1200px] rounded-full blur-[200px] opacity-80 animate-pulse"
-            style={{ 
-              background: `radial-gradient(circle, ${theme.hex}90 0%, ${theme.hex}40 40%, transparent 70%)`
-            }} 
-          />
-          <div 
-            className="absolute top-[300px] -left-20 w-[1000px] h-[1000px] rounded-full blur-[180px] opacity-70"
-            style={{ 
-              background: `radial-gradient(circle, ${theme.hex}80 0%, ${theme.hex}30 50%, transparent 70%)`,
-              animationDelay: '1s'
-            }} 
-          />
-          <div 
-            className="absolute top-[600px] -left-24 w-[900px] h-[900px] rounded-full blur-[160px] opacity-65 animate-pulse"
-            style={{ 
-              background: `radial-gradient(circle, ${theme.hex}70 0%, ${theme.hex}25 50%, transparent 70%)`,
-              animationDelay: '0.5s'
-            }} 
-          />
-          <div 
-            className="absolute top-[900px] -left-16 w-[800px] h-[800px] rounded-full blur-[150px] opacity-60"
-            style={{ 
-              background: `radial-gradient(circle, ${theme.hex}60 0%, ${theme.hex}20 50%, transparent 70%)`
-            }} 
-          />
-          <div 
-            className="absolute bottom-0 -left-20 w-[700px] h-[700px] rounded-full blur-[140px] opacity-55 animate-pulse"
-            style={{ 
-              background: `radial-gradient(circle, ${theme.hex}50 0%, ${theme.hex}15 50%, transparent 70%)`,
-              animationDelay: '1.5s'
-            }} 
-          />
-        </div>
-
-        {/* CONTAINER 1: HEADER & INTRO */}
-        <div className="container mx-auto max-w-7xl px-6 relative z-10">
-          <motion.div 
-            initial={{ opacity: 0, y: -20 }} 
-            animate={{ opacity: 1, y: 0 }} 
-            transition={{ duration: 0.5 }}
-            className="mb-8 flex justify-center relative"
-          >
-            <div 
-              className="absolute inset-0 rounded-full blur-[30px] opacity-70 animate-pulse"
-              style={{ 
-                background: `radial-gradient(circle, ${theme.hex}80 0%, ${theme.hex}40 50%, transparent 100%)`
-              }}
-            />
-            <div 
-              className="absolute inset-0 rounded-full blur-[20px] opacity-60"
-              style={{ 
-                background: `radial-gradient(circle, ${theme.hex}70 0%, ${theme.hex}30 50%, transparent 100%)`,
-                animationDelay: '0.5s'
-              }}
-            />
-            <div 
-              className={`relative inline-flex items-center gap-3 px-6 py-3 rounded-full bg-white/5 backdrop-blur-xl border ${theme.border}`}
-              style={{
-                boxShadow: `0 0 30px ${theme.hex}60, 0 0 15px ${theme.hex}40, inset 0 0 20px ${theme.hex}10`
-              }}
-            >
-              <Utensils className={`${theme.text}`} />
-              <span className={`text-sm font-bold uppercase tracking-wider ${theme.text}`}>{pageCategory}</span>
+      {/* --- TOP HEADER (With Working Dropdown) --- */}
+      <div className="relative z-50 pt-28 pb-8 w-full max-w-7xl mx-auto px-6">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+          <Link to="/industries" className="flex items-center gap-4 group">
+            <div className="w-10 h-10 rounded-full border border-white/10 bg-white/5 flex items-center justify-center group-hover:bg-white/10 transition-colors">
+              <ArrowLeft className="w-4 h-4 text-slate-300" />
             </div>
-          </motion.div>
+            <span className="text-xs font-bold tracking-[0.15em] text-slate-300 uppercase">Back to Industries</span>
+          </Link>
 
-          <div className="mb-16 flex justify-center text-center">
-            <TiltHeading text={pageTitle} theme={theme} />
-          </div>
+          <div className="relative" ref={dropdownRef}>
+            <button 
+              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+              className="flex items-center gap-3 px-5 py-2.5 rounded-full border border-white/10 bg-[#1e1b4b]/40 hover:bg-[#1e1b4b]/60 transition-colors backdrop-blur-md"
+            >
+              <Grid className="w-4 h-4 text-slate-300" />
+              <span className="text-sm font-semibold text-slate-200">Switch Industry</span>
+              <ChevronDown className={`w-4 h-4 text-slate-400 ml-2 transition-transform duration-300 ${isDropdownOpen ? 'rotate-180' : ''}`} />
+            </button>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start mb-16">
-            <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.6, delay: 0.2 }} className="text-lg md:text-xl text-slate-300 leading-relaxed">
-               <ContentParser blocks={introBlocks} theme={theme} />
-            </motion.div>
-
-            <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.8, delay: 0.3 }} className="relative w-full group perspective-1000">
-              <div className={`p-3 rounded-2xl bg-gradient-to-br from-white/10 to-transparent border border-white/5 shadow-2xl backdrop-blur-sm ${theme.glow} shadow-[0_0_40px_${theme.hex}40]`}>
-                <motion.div 
-                  whileHover={{ scale: 1.02 }} 
-                  className="relative rounded-xl overflow-hidden aspect-video cursor-zoom-in" 
-                >
-                  <img src={pageImage} alt={pageTitle} className="w-full h-full object-cover" />
-                  <div className={`${theme.glow} opacity-0 group-hover:opacity-20 transition-opacity duration-300`} />
-                  <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
-                </motion.div>
+            <motion.div 
+              initial={{ opacity: 0, y: -10, scale: 0.95 }}
+              animate={{ opacity: isDropdownOpen ? 1 : 0, y: isDropdownOpen ? 0 : -10, scale: isDropdownOpen ? 1 : 0.95 }}
+              transition={{ duration: 0.2 }}
+              className={`absolute right-0 mt-3 w-56 rounded-xl bg-[#0b0c16] border border-orange-500/20 shadow-[0_15px_40px_-10px_rgba(234,88,12,0.5)] overflow-hidden z-50 ${isDropdownOpen ? 'pointer-events-auto' : 'pointer-events-none'}`}
+            >
+              <div className="py-2 flex flex-col bg-white/5 backdrop-blur-xl">
+                <Link to="/industries/healthcare" onClick={() => setIsDropdownOpen(false)} className="px-5 py-3 text-sm font-medium text-slate-300 hover:bg-orange-500/10 hover:text-orange-400 transition-colors border-l-2 border-transparent hover:border-orange-500">Healthcare</Link>
+                <Link to="/industries/automotive" onClick={() => setIsDropdownOpen(false)} className="px-5 py-3 text-sm font-medium text-slate-300 hover:bg-orange-500/10 hover:text-orange-400 transition-colors border-l-2 border-transparent hover:border-orange-500">Automotive</Link>
+                <Link to="/industries/real-estate" onClick={() => setIsDropdownOpen(false)} className="px-5 py-3 text-sm font-medium text-slate-300 hover:bg-orange-500/10 hover:text-orange-400 transition-colors border-l-2 border-transparent hover:border-orange-500">Real Estate</Link>
+                <Link to="/industries/technology" onClick={() => setIsDropdownOpen(false)} className="px-5 py-3 text-sm font-medium text-slate-300 hover:bg-orange-500/10 hover:text-orange-400 transition-colors border-l-2 border-transparent hover:border-orange-500">Technology</Link>
+                <Link to="/industries/travel-tourism" onClick={() => setIsDropdownOpen(false)} className="px-5 py-3 text-sm font-medium text-slate-300 hover:bg-orange-500/10 hover:text-orange-400 transition-colors border-l-2 border-transparent hover:border-orange-500">Travel & Tourism</Link>
               </div>
             </motion.div>
           </div>
         </div>
-
-        {/* CONTAINER 2: BODY CONTENT */}
-        <div className="container mx-auto max-w-7xl px-6 relative z-10">
-          <motion.div 
-            initial={{ opacity: 0, y: 30 }} 
-            whileInView={{ opacity: 1, y: 0 }} 
-            viewport={{ once: true }} 
-            className="w-full" 
-          >
-            <ContentParser blocks={mainBodyBlocks} theme={theme} />
-          </motion.div>
-        </div>
-
       </div>
 
-      {/* --- FEATURES SECTION --- */}
-      {pageFeatures.length > 0 && (
-        <div className="bg-black py-20 border-t border-white/5 relative">
-          <div className="container mx-auto max-w-7xl px-6 relative z-10">
-            <div className="text-center mb-14">
-              <h3 className="text-3xl md:text-4xl font-bold text-white mb-4">Key Features & Benefits</h3>
-              <div className={`h-1.5 w-24 ${theme.accent} rounded-full mx-auto shadow-[0_0_20px_${theme.hex}]`} />
+      {/* --- 2. HERO SECTION --- */}
+      <div className="relative z-10 flex flex-col items-center justify-center text-center px-6 pt-6 pb-20">
+        <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+          <div className="inline-flex items-center gap-3 px-6 py-2 rounded-full border border-white/20 bg-white/5 backdrop-blur-md shadow-[0_0_20px_rgba(255,255,255,0.05)] mb-8">
+            <Sparkles className="w-4 h-4 text-orange-400 drop-shadow-[0_0_8px_#fb923c]" />
+            <span className="text-xs font-bold uppercase tracking-[0.15em] text-white">{pageCategory}</span>
+          </div>
+        </motion.div>
+
+        <TiltHeading text={pageTitle} theme={theme} />
+
+        <motion.p 
+          initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.7, delay: 0.3 }}
+          className="text-xl md:text-2xl text-slate-300 font-light tracking-wide mt-6"
+        >
+          {pageDescription}
+        </motion.p>
+      </div>
+
+      {/* --- MAIN FULL WIDTH TEXT CONTENT --- */}
+      <div className="relative z-10 px-6 py-8">
+        <div className="max-w-5xl mx-auto bg-white/[0.02] border border-white/5 p-8 md:p-12 rounded-[2rem] shadow-[0_0_50px_rgba(0,0,0,0.3)] backdrop-blur-sm">
+          <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
+            <ContentParser blocks={allBlocks} theme={theme} />
+          </motion.div>
+        </div>
+      </div>
+
+      {/* --- 3. THE TWO SPECIFIC BOTTOM CARDS --- */}
+      <div className="relative z-20 px-6 py-20 max-w-6xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
+          
+          {/* Card 1: Industry Leaders */}
+          <div className="bg-[#0b0c16] border border-white/5 rounded-[2rem] p-10 lg:p-14 flex flex-col items-center justify-center text-center shadow-[0_0_50px_-15px_rgba(234,88,12,0.5)] relative overflow-hidden group">
+            <div className="absolute inset-0 bg-gradient-to-br from-orange-500/10 to-transparent opacity-80" />
+            
+            <div className="w-20 h-20 rounded-3xl bg-[#16182d] border border-orange-500/20 flex items-center justify-center shadow-[0_0_30px_rgba(234,88,12,0.4)] mb-8 relative z-10 transition-transform duration-300 group-hover:scale-110">
+              <Rocket className="w-8 h-8 text-orange-400 drop-shadow-[0_0_8px_#fb923c]" />
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            
+            <h3 className="text-3xl font-extrabold text-white mb-6 relative z-10 drop-shadow-md">Industry Leaders</h3>
+            <p className="text-slate-400 leading-relaxed max-w-sm relative z-10">
+              Specialized digital strategies designed to maximize growth in the Food & Beverage sector.
+            </p>
+          </div>
+
+          {/* Card 2: Key Solutions */}
+          <div className="bg-[#0b0c16] border border-white/5 rounded-[2rem] p-10 flex flex-col shadow-[0_0_50px_-15px_rgba(234,88,12,0.5)] relative overflow-hidden group">
+            <div className="absolute inset-0 bg-gradient-to-bl from-orange-500/10 to-transparent opacity-80" />
+            
+            <div className="flex items-center gap-5 mb-8 relative z-10">
+              <div className="w-14 h-14 rounded-2xl bg-[#16182d] border border-orange-500/20 flex items-center justify-center shadow-[0_0_20px_rgba(234,88,12,0.4)]">
+                <Star className="w-6 h-6 text-orange-400 drop-shadow-[0_0_8px_#fb923c]" />
+              </div>
+              <h3 className="text-2xl font-extrabold text-white drop-shadow-md">Key Solutions</h3>
+            </div>
+            
+            <hr className="border-white/10 mb-8 relative z-10" />
+            
+            <div className="space-y-6 mb-10 flex-1 relative z-10">
               {pageFeatures.map((feature, i) => (
-                <motion.div 
-                  key={i} 
-                  whileHover={{ y: -8, boxShadow: `0 10px 30px -10px ${theme.hex}30` }} 
-                  className={`bg-white/5 border border-white/10 p-6 rounded-2xl hover:border-white/20 transition-all duration-300 flex items-start gap-4 backdrop-blur-md group`}
-                >
-                  <div className={`p-3 rounded-xl bg-white/5 ${theme.text} group-hover:bg-orange-600 group-hover:text-white transition-colors duration-300`}>
-                    <CheckCircle2 className="w-6 h-6" />
+                <div key={i} className="flex items-center gap-4">
+                  <div className="w-6 h-6 rounded-full bg-orange-500/10 flex items-center justify-center border border-orange-500/30 shadow-[0_0_10px_rgba(234,88,12,0.2)]">
+                     <CheckCircle2 className="w-3.5 h-3.5 text-orange-400" />
                   </div>
-                  <span className="text-slate-300 font-medium leading-relaxed text-lg group-hover:text-white transition-colors">{feature}</span>
-                </motion.div>
+                  <span className="text-[15px] font-semibold text-slate-300">{feature}</span>
+                </div>
               ))}
             </div>
+            
+            <button 
+              onClick={openContactModal} 
+              className="w-full py-4 rounded-xl bg-[#ea580c] hover:bg-[#c2410c] text-white font-bold text-lg transition-colors shadow-[0_10px_30px_-10px_rgba(234,88,12,0.6)] relative z-10"
+            >
+              Get Custom Quote
+            </button>
           </div>
-        </div>
-      )}
 
-      {/* --- CALL TO ACTION --- */}
-      <div className="py-24 bg-gradient-to-b from-slate-950 to-black border-y border-white/5 relative overflow-hidden">
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className={`absolute top-1/3 left-1/3 w-[700px] h-[700px] ${theme.glow} rounded-full blur-[140px] opacity-40 animate-pulse`} />
-          <div className={`absolute top-1/4 right-1/4 w-[500px] h-[500px] ${theme.glow} rounded-full blur-[100px] opacity-30`} />
-          <div className={`absolute bottom-1/3 left-1/2 -translate-x-1/2 w-[800px] h-[800px] ${theme.glow} rounded-full blur-[160px] opacity-25`} />
-          <div className={`absolute top-1/2 -left-20 w-[600px] h-[600px] ${theme.glow} rounded-full blur-[150px] opacity-35`} />
-        </div>
-        <div className="container mx-auto max-w-7xl px-6 relative z-10 text-center">
-          <motion.div whileHover={{ rotate: 10, scale: 1.1 }} className={`inline-flex p-6 bg-white/5 rounded-full mb-8 ring-1 ring-white/10 shadow-[0_0_30px_${theme.hex}40] backdrop-blur-xl`}>
-            <Rocket className={`${theme.text}`} />
-          </motion.div>
-          <h2 className="text-4xl md:text-5xl font-extrabold text-white mb-8">Ready to <span className={`text-transparent bg-clip-text bg-gradient-to-r ${theme.titleGradient}`}>Scale?</span></h2>
-          <div className="flex flex-wrap gap-6 justify-center">
-            <button onClick={openContactModal} className={`px-10 py-4 ${theme.accent} text-white font-bold text-lg rounded-xl shadow-[0_0_20px_${theme.hex}60] hover:shadow-[0_0_40px_${theme.hex}80] flex items-center gap-3 hover:-translate-y-1 transition-all`}>
-              Get Started Now <ArrowRight className="w-5 h-5" />
-            </button>
-            <button onClick={openContactModal} className="px-10 py-4 bg-white/5 border border-white/10 hover:border-white/20 text-white font-semibold text-lg rounded-xl flex items-center gap-3 hover:-translate-y-1 transition-all">
-              <MailIcon className="w-5 h-5" /> Contact Sales
-            </button>
-          </div>
         </div>
       </div>
 
-      {/* --- RELATED INDUSTRIES --- */}
-      <div className="py-24 bg-black container mx-auto max-w-7xl px-6 relative overflow-hidden">
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className={`absolute top-1/4 left-1/4 w-[400px] h-[400px] ${theme.glow} rounded-full blur-[100px] opacity-25`} />
-          <div className={`absolute bottom-1/4 right-1/4 w-[300px] h-[300px] ${theme.glow} rounded-full blur-[80px] opacity-20`} />
-          <div className={`absolute top-1/2 -left-10 w-[500px] h-[500px] ${theme.glow} rounded-full blur-[120px] opacity-30`} />
-        </div>
-        <div className="relative z-10">
-          <h3 className="text-3xl font-bold text-white mb-10">More Industry Solutions</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <Link to="/industries/healthcare" className="group block h-full">
-              <div className="bg-slate-900/40 border border-white/5 rounded-2xl overflow-hidden hover:border-white/20 transition-all hover:shadow-2xl h-full flex flex-col hover:-translate-y-2 backdrop-blur-sm">
-                <div className="relative h-48 bg-slate-950 overflow-hidden">
-                  <img src="/img/Services/istockphoto-1167624088-612x612.jpg" alt="Healthcare" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
-                  <div className="absolute bottom-4 left-4 p-2 bg-white/10 backdrop-blur-md rounded-lg border border-white/10">
-                    <Layers className={`${theme.text}`} />
-                  </div>
-                </div>
-                <div className="p-6 flex-1 flex flex-col">
-                  <h4 className={`text-lg font-bold text-white mb-3 group-hover:${theme.text} transition-colors`}>Healthcare</h4>
-                  <p className="text-slate-400 text-sm line-clamp-3 mb-4">Modernize healthcare delivery with technology</p>
-                  <span className={`${theme.text} text-sm font-bold flex items-center gap-2 mt-auto uppercase`}>Learn More <ArrowRight className="w-4 h-4" /></span>
-                </div>
-              </div>
-            </Link>
-            <Link to="/industries/technology" className="group block h-full">
-              <div className="bg-slate-900/40 border border-white/5 rounded-2xl overflow-hidden hover:border-white/20 transition-all hover:shadow-2xl h-full flex flex-col hover:-translate-y-2 backdrop-blur-sm">
-                <div className="relative h-48 bg-slate-950 overflow-hidden">
-                  <img src="/img/Services/imgi_10_saas-development.webp" alt="Technology" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
-                  <div className="absolute bottom-4 left-4 p-2 bg-white/10 backdrop-blur-md rounded-lg border border-white/10">
-                    <Layers className={`${theme.text}`} />
-                  </div>
-                </div>
-                <div className="p-6 flex-1 flex flex-col">
-                  <h4 className={`text-lg font-bold text-white mb-3 group-hover:${theme.text} transition-colors`}>Technology</h4>
-                  <p className="text-slate-400 text-sm line-clamp-3 mb-4">Drive innovation with cutting-edge digital solutions</p>
-                  <span className={`${theme.text} text-sm font-bold flex items-center gap-2 mt-auto uppercase`}>Learn More <ArrowRight className="w-4 h-4" /></span>
-                </div>
-              </div>
-            </Link>
-            <Link to="/industries/education" className="group block h-full">
-              <div className="bg-slate-900/40 border border-white/5 rounded-2xl overflow-hidden hover:border-white/20 transition-all hover:shadow-2xl h-full flex flex-col hover:-translate-y-2 backdrop-blur-sm">
-                <div className="relative h-48 bg-slate-950 overflow-hidden">
-                  <img src="/img/Services/istockphoto-2218180281-612x612.jpg" alt="Education" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
-                  <div className="absolute bottom-4 left-4 p-2 bg-white/10 backdrop-blur-md rounded-lg border border-white/10">
-                    <Layers className={`${theme.text}`} />
-                  </div>
-                </div>
-                <div className="p-6 flex-1 flex flex-col">
-                  <h4 className={`text-lg font-bold text-white mb-3 group-hover:${theme.text} transition-colors`}>Education</h4>
-                  <p className="text-slate-400 text-sm line-clamp-3 mb-4">Transform learning experiences with digital solutions</p>
-                  <span className={`${theme.text} text-sm font-bold flex items-center gap-2 mt-auto uppercase`}>Learn More <ArrowRight className="w-4 h-4" /></span>
-                </div>
-              </div>
-            </Link>
-            <Link to="/industries/real-estate" className="group block h-full">
-              <div className="bg-slate-900/40 border border-white/5 rounded-2xl overflow-hidden hover:border-white/20 transition-all hover:shadow-2xl h-full flex flex-col hover:-translate-y-2 backdrop-blur-sm">
-                <div className="relative h-48 bg-slate-950 overflow-hidden">
-                  <img src="/img/Services/istockphoto-1209989349-612x612.jpg" alt="Real Estate" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
-                  <div className="absolute bottom-4 left-4 p-2 bg-white/10 backdrop-blur-md rounded-lg border border-white/10">
-                    <Layers className={`${theme.text}`} />
-                  </div>
-                </div>
-                <div className="p-6 flex-1 flex flex-col">
-                  <h4 className={`text-lg font-bold text-white mb-3 group-hover:${theme.text} transition-colors`}>Real Estate</h4>
-                  <p className="text-slate-400 text-sm line-clamp-3 mb-4">Accelerate property sales with digital marketing</p>
-                  <span className={`${theme.text} text-sm font-bold flex items-center gap-2 mt-auto uppercase`}>Learn More <ArrowRight className="w-4 h-4" /></span>
-                </div>
-              </div>
-            </Link>
-          </div>
-        </div>
-      </div>
     </div>
   );
 };

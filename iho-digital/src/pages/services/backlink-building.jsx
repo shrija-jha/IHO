@@ -256,12 +256,14 @@ const ContentParser = ({ blocks, theme }) => {
     const trimmed = line.trim();
     const words = trimmed.split(/\s+/);
     // Detect patterns like "Static Website Development Company â€“ IHO Digital"
-    // This should be the first line of the first block typically
     if (
       isFirstInBlock &&
       (trimmed.includes('â€“ IHO Digital') || 
        trimmed.includes('- IHO Digital') ||
+       trimmed.includes('– IHO Digital') || 
+       trimmed.includes('— IHO Digital') || 
        (trimmed.includes('Company') && words.length < 20 && !trimmed.endsWith('.')) ||
+       (trimmed.includes('Agency') && words.length < 20 && !trimmed.endsWith('.')) ||
        (trimmed.includes('Services') && words.length < 20 && !trimmed.endsWith('.')) ||
        (trimmed.includes('Solutions') && words.length < 20 && !trimmed.endsWith('.')))
     ) {
@@ -481,6 +483,8 @@ const ContentParser = ({ blocks, theme }) => {
 
 // --- 4. MAIN PAGE COMPONENT ---
 const ServicePage = () => {
+  const [isLightboxOpen, setIsLightboxOpen] = useState(false);
+
   const service = digitalMarketingData.find(s => s.id === 'backlink-building');
   const meta = seoData['static-website'] || {}; 
   const serviceBasePath = DIGITAL_MARKETING_BASE;
@@ -496,7 +500,7 @@ const ServicePage = () => {
     return digitalMarketingData
       .filter(s => s.category === service?.category && s.id !== 'static-website')
       .slice(0, 4);
-  }, [digitalMarketingData, service]);
+  }, [service]);
 
   useEffect(() => { window.scrollTo(0, 0); }, []);
 
@@ -780,7 +784,7 @@ const ServicePage = () => {
                     <div className="relative h-48 bg-slate-950 overflow-hidden">
                       <img src={related.img || "/img/portfolio-5.png"} alt={related.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
                       <div className="absolute bottom-4 left-4 p-2 bg-white/10 backdrop-blur-md rounded-lg border border-white/10">
-                         {related.icon ? <related.icon className={`${theme.text}`} /> : <Layers className={`${theme.text}`} />}
+                          {related.icon ? <related.icon className={`${theme.text}`} /> : <Layers className={`${theme.text}`} />}
                       </div>
                     </div>
                     <div className="p-6 flex-1 flex flex-col">
@@ -800,5 +804,3 @@ const ServicePage = () => {
 };
 
 export default ServicePage;
-
-

@@ -185,7 +185,7 @@ const Footer = () => {
                     <div>
                         <p className="text-white font-medium">Phone</p>
                         <a href="https://wa.me/917678592968" target="_blank" rel="noopener noreferrer" className="text-sm mt-1 hover:text-cyan-400 cursor-pointer transition-colors block">
-                          +91-7678592968
+                          +91 8291589861
                         </a>
                     </div>
                 </div>
@@ -222,7 +222,7 @@ const Footer = () => {
 
       {/* --- FLOATING WHATSAPP BUTTON --- */}
       <a
-        href="https://wa.me/917678592968"
+        href="https://wa.me/918291589861"
         target="_blank"
         rel="noopener noreferrer"
         className="fixed bottom-6 right-6 z-[999] w-14 h-14 bg-green-500 hover:bg-green-600 text-white rounded-full shadow-lg flex items-center justify-center transition-transform hover:scale-110 animate-bounce-slow"

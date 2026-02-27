@@ -5,8 +5,6 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "sitemap": "node scripts/generate-sitemap.mjs",
-    "prebuild": "npm run sitemap",
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview"
@@ -17,6 +15,7 @@
     "@tailwindcss/vite": "^4.1.18",
     "clsx": "^2.1.1",
     "framer-motion": "^12.28.1",
+    "gsap": "^3.13.8",
     "lucide-react": "^0.562.0",
     "nodemailer": "^8.0.1",
     "react": "^19.2.0",

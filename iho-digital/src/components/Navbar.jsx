@@ -63,10 +63,27 @@ const MegaMenu = ({ items, prefix, queryParam, closeMenu }) => {
 
 // --- COMPONENT: CONTACT MODAL (GET QUOTE) ---
 const ContactModal = ({ isOpen, onClose, onToast }) => {
-  // Removed 'service' from state
-  const [formData, setFormData] = useState({ name: '', email: '', message: '' });
+  const [formData, setFormData] = useState({ name: '', email: '', service: '', message: '' });
   const [isSending, setIsSending] = useState(false);
-  const [status, setStatus] = useState('idle'); // idle | success | error
+  const [status, setStatus] = useState('idle'); 
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false); 
+
+  // Expanded comprehensive list based on typical agency offerings
+  const servicesList = [
+    'Web Design',
+    'Web Development', 
+    'E-Commerce Development',
+    'Shopify Development',
+    'WordPress Development',
+    'Custom Web Applications',
+    'Mobile App Development',
+    'Digital Marketing',
+    'Search Engine Optimization (SEO)',
+    'Social Media Marketing (SMM)',
+    'Pay Per Click (PPC) / Ads',
+    'Content Marketing',
+    'Other'
+  ];
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -78,6 +95,11 @@ const ContactModal = ({ isOpen, onClose, onToast }) => {
     } else {
       setFormData({ ...formData, [name]: value });
     }
+  };
+
+  const handleServiceSelect = (service) => {
+    setFormData({ ...formData, service });
+    setIsDropdownOpen(false);
   };
 
   const handleSubmit = async (e) => {
@@ -94,7 +116,6 @@ const ContactModal = ({ isOpen, onClose, onToast }) => {
     }
 
     try {
-      // AJAX Request to FormSubmit Backend
       const response = await fetch("https://formsubmit.co/ajax/info@ihodigital.com", {
         method: "POST",
         headers: { 
@@ -104,8 +125,9 @@ const ContactModal = ({ isOpen, onClose, onToast }) => {
         body: JSON.stringify({
             name: formData.name,
             email: formData.email,
+            service: formData.service || 'Not Selected',
             message: formData.message,
-            _subject: `Get Quote Request: ${formData.name}`, // Removed service from subject line
+            _subject: `Get Quote Request: ${formData.name} - ${formData.service || 'General'}`,
             _template: "table", 
             _captcha: "false" 
         })
@@ -115,19 +137,16 @@ const ContactModal = ({ isOpen, onClose, onToast }) => {
         throw new Error('Server error');
       }
 
-      // Success Logic
       setStatus('success');
       
-      // Trigger Toast
       if (onToast) onToast({ type: 'success', message: 'Quote request sent successfully!' });
 
-      // Reload Page after 5 seconds to reset state
       setTimeout(() => {
         setStatus('idle');
-        setFormData({ name: '', email: '', message: '' }); // Reset without service
+        setFormData({ name: '', email: '', service: '', message: '' }); 
         onClose();
         window.location.reload(); 
-      }, 5000);
+      }, 3000);
 
     } catch (err) {
       console.error("Error", err);
@@ -153,16 +172,19 @@ const ContactModal = ({ isOpen, onClose, onToast }) => {
             initial={{ opacity: 0 }} 
             animate={{ opacity: 1 }} 
             exit={{ opacity: 0 }} 
-            onClick={onClose} 
+            onClick={() => {
+              setIsDropdownOpen(false); 
+              onClose();
+            }} 
             className="absolute inset-0 bg-black/95 backdrop-blur-md" 
           />
           <motion.div 
             initial={{ scale: 0.95, opacity: 0 }} 
             animate={{ scale: 1, opacity: 1 }} 
             exit={{ scale: 0.95, opacity: 0 }} 
-            className="relative w-full max-w-lg bg-[#0a0a0a] border border-white/10 rounded-2xl overflow-hidden shadow-2xl z-[2001]"
+            className="relative w-full max-w-lg bg-[#0a0a0a] border border-white/10 rounded-2xl overflow-visible shadow-2xl z-[2001]"
           >
-            <div className="flex justify-between px-6 py-4 border-b border-white/10 bg-white/5">
+            <div className="flex justify-between px-6 py-4 border-b border-white/10 bg-white/5 rounded-t-2xl overflow-hidden">
               <h3 className="text-white font-bold flex items-center gap-2">
                 <Rocket className="w-5 h-5 text-blue-500" /> Get Your Quote
               </h3>
@@ -205,7 +227,51 @@ const ContactModal = ({ isOpen, onClose, onToast }) => {
                             />
                         </div>
                         
-                        {/* Service dropdown block completely removed from here */}
+                        {/* CUSTOM SERVICE DROPDOWN */}
+                        <div className="relative group">
+                          <button
+                            type="button"
+                            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                            className={`w-full bg-black border ${isDropdownOpen ? 'border-blue-500 rounded-t-lg border-b-0' : 'border-white/10 rounded-lg'} py-3 pl-10 pr-4 text-left text-white focus:outline-none transition-colors flex items-center justify-between relative z-20`}
+                          >
+                            <Briefcase className={`absolute left-3 top-3.5 w-4 h-4 transition-colors ${isDropdownOpen ? 'text-blue-500' : 'text-slate-500 group-hover:text-blue-500'}`} />
+                            <span className={formData.service ? 'text-white' : 'text-slate-600'}>
+                              {formData.service || 'Select a Service'}
+                            </span>
+                            <ChevronDown className={`w-4 h-4 text-slate-500 transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`} />
+                          </button>
+                          
+                          <AnimatePresence>
+                            {isDropdownOpen && (
+                              <motion.div
+                                initial={{ opacity: 0, y: -5 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: -5 }}
+                                transition={{ duration: 0.15 }}
+                                // Added max height and vertical scrolling for long lists
+                                className="absolute top-full left-0 w-full bg-black border border-white/10 border-t-0 rounded-b-lg z-30 max-h-56 overflow-y-auto overflow-x-hidden shadow-2xl"
+                                style={{
+                                    scrollbarWidth: 'thin',
+                                    scrollbarColor: '#3b82f6 transparent'
+                                }}
+                              >
+                                {servicesList.map((svc, idx) => (
+                                  <div
+                                    key={idx}
+                                    onClick={() => handleServiceSelect(svc)}
+                                    className={`px-10 py-3 cursor-pointer text-sm transition-colors ${
+                                      formData.service === svc
+                                        ? 'bg-blue-600 text-white'
+                                        : 'text-slate-300 hover:bg-white/10'
+                                    }`}
+                                  >
+                                    {svc}
+                                  </div>
+                                ))}
+                              </motion.div>
+                            )}
+                          </AnimatePresence>
+                        </div>
                         
                         <div className="relative group">
                             <MessageSquare className="absolute left-3 top-3.5 text-slate-500 w-4 h-4 group-focus-within:text-blue-500 transition-colors" />

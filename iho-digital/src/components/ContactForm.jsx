@@ -77,7 +77,7 @@ const ContactForm = () => {
         setFormData({ name: '', email: '', message: '' });
         
         // Refresh page after 5 seconds to reset state
-        setTimeout(() => { window.location.reload(); }, 5000);
+        setTimeout(() => { window.location.reload(); }, 2000);
       } else {
         throw new Error('Server error');
       }
@@ -85,7 +85,7 @@ const ContactForm = () => {
       console.error("Error", err);
       setStatus('error');
       setErrorMsg('Failed to send message. Please try again.');
-      setTimeout(() => setStatus('idle'), 4000);
+      setTimeout(() => setStatus('idle'), 3000);
     }
   };
 

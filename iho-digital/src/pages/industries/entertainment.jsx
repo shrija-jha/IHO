@@ -1,121 +1,429 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import SEO from "../../components/SEO.jsx";
 import { Link } from 'react-router-dom';
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
-import { ChevronRight, CheckCircle2, Rocket, Home, Layers, ArrowRight, Mail as MailIcon } from 'lucide-react';
-import { Film } from 'lucide-react';
+import { 
+  ChevronRight, CheckCircle2, 
+  Rocket, Home, ArrowRight, Mail as MailIcon,
+  Sparkles, Star, Grid, ArrowLeft, ChevronDown
+} from 'lucide-react';
 
-const themePalette = { pink: { gradient: "from-pink-950 via-slate-900 to-black", accent: "bg-pink-600", text: "text-pink-400", border: "border-pink-500/30", glow: "bg-pink-500/20", hex: "#ec4899", titleGradient: "from-pink-300 via-pink-500 to-rose-400" } };
-const theme = themePalette.pink;
+// --- 1. THEME PALETTE ---
+const themePalette = {
+  fuchsia: { 
+    gradient: "from-[#050510] via-[#0a0a1a] to-[#050510]", 
+    accent: "bg-[#d946ef]", 
+    text: "text-fuchsia-400", 
+    border: "border-fuchsia-500/20",
+    hex: "#d946ef",
+    titleGradient: "from-[#e879f9] via-[#d946ef] to-[#c026d3]"
+  }
+};
 
+const theme = themePalette.fuchsia;
+
+// --- 2. GLOWING TILT HEADING COMPONENT ---
 const TiltHeading = ({ text, theme }) => {
   const ref = useRef(null);
   const x = useMotionValue(0);
   const y = useMotionValue(0);
   const mouseX = useSpring(x, { stiffness: 500, damping: 100 });
   const mouseY = useSpring(y, { stiffness: 500, damping: 100 });
+
   const rotateX = useTransform(mouseY, [-0.5, 0.5], ["15deg", "-15deg"]);
   const rotateY = useTransform(mouseX, [-0.5, 0.5], ["-15deg", "15deg"]);
-  const handleMouseMove = (e) => { const rect = ref.current.getBoundingClientRect(); x.set((e.clientX - rect.left - rect.width / 2) / rect.width); y.set((e.clientY - rect.top - rect.height / 2) / rect.height); };
-  return (<motion.div ref={ref} onMouseMove={handleMouseMove} onMouseLeave={() => { x.set(0); y.set(0); }} style={{ rotateX, rotateY, transformStyle: "preserve-3d" }} className="perspective-1000 inline-block cursor-default py-4 relative z-10"><motion.h2 style={{ transform: "translateZ(30px)" }} className={`text-4xl md:text-5xl lg:text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r ${theme.titleGradient} uppercase leading-tight drop-shadow-2xl text-center tracking-tight`}>{text}</motion.h2><div className={`absolute inset-0 ${theme.glow} blur-[120px] opacity-60 -z-10 animate-pulse`} /><div className={`absolute inset-0 ${theme.glow} blur-[200px] opacity-30 -z-20`} /></motion.div>);
+
+  const handleMouseMove = (e) => {
+    const rect = ref.current.getBoundingClientRect();
+    x.set((e.clientX - rect.left - rect.width / 2) / rect.width);
+    y.set((e.clientY - rect.top - rect.height / 2) / rect.height);
+  };
+
+  return (
+    <motion.div
+      ref={ref}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={() => { x.set(0); y.set(0); }}
+      style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
+      className="perspective-1000 inline-block cursor-default py-4 relative z-10"
+    >
+      <motion.h1 
+        style={{ transform: "translateZ(30px)", dropShadow: "0px 10px 30px rgba(217,70,239,0.5)" }}
+        className={`text-6xl md:text-8xl lg:text-9xl font-black text-transparent bg-clip-text bg-gradient-to-r ${theme.titleGradient} tracking-tight`}
+      >
+        {text}
+      </motion.h1>
+      <div className={`absolute inset-0 bg-fuchsia-500/30 blur-[100px] opacity-80 -z-10 animate-pulse`} />
+      <div className={`absolute inset-0 bg-pink-500/20 blur-[150px] opacity-50 -z-20`} />
+    </motion.div>
+  );
 };
 
+// --- 3. CONTENT PARSER (Full Width) ---
 const ContentParser = ({ blocks, theme }) => {
   if (!blocks || blocks.length === 0) return null;
+
+  const isShortFeatureHeading = (line, nextLine) => {
+    const trimmed = line.trim();
+    const words = trimmed.split(/\s+/);
+    return (
+      words.length >= 1 && words.length <= 3 && 
+      !trimmed.endsWith('.') && !trimmed.endsWith(',') && !trimmed.endsWith(';') && !trimmed.endsWith('?') && !trimmed.endsWith(':') &&
+      nextLine && nextLine.trim().length > 0 && !nextLine.trim().startsWith('-')
+    );
+  };
+
   const processedBlocks = [];
   blocks.forEach((block, blockIndex) => {
-    if (block.includes('•') || block.trim().startsWith('-')) { processedBlocks.push({ type: 'bullets', content: block }); return; }
     const lines = block.split('\n').filter(line => line.trim().length > 0);
     let i = 0;
     while (i < lines.length) {
       const line = lines[i].trim();
       const nextLine = i < lines.length - 1 ? lines[i + 1].trim() : null;
-      if (line.includes('IHO Digital') || (line.length < 50 && blockIndex === 0 && i === 0)) { processedBlocks.push({ type: 'company_subheading', content: line }); i++; }
-      else if (line.endsWith('?') || line.endsWith(':')) { processedBlocks.push({ type: 'section_heading', content: line }); i++; }
-      else if (nextLine && nextLine.length > 30 && line.split(/\s+/).length <= 3) { processedBlocks.push({ type: 'feature_card', heading: line, content: nextLine }); i += 2; }
-      else { const lastItem = processedBlocks[processedBlocks.length - 1]; if (lastItem && lastItem.type === 'paragraph') { lastItem.content += ' ' + line; } else { processedBlocks.push({ type: 'paragraph', content: line }); } i++; }
+
+      if (line.startsWith('-') || line.startsWith('•')) {
+        const listItems = [];
+        while (i < lines.length && (lines[i].trim().startsWith('-') || lines[i].trim().startsWith('•'))) {
+          listItems.push(lines[i].trim().replace(/^[-•]\s*/, ''));
+          i++;
+        }
+        processedBlocks.push({ type: 'card_list', items: listItems });
+        continue;
+      }
+      
+      if (line.endsWith('?') || line.endsWith(':') || line.match(/^\d+\.\s/)) {
+        processedBlocks.push({ type: 'section_heading', content: line.replace(/^\d+\.\s*/, '') });
+        i++;
+        continue;
+      }
+      
+      if (isShortFeatureHeading(line, nextLine)) {
+        processedBlocks.push({ type: 'feature_card', heading: line, content: nextLine });
+        i += 2;
+        continue;
+      }
+      
+      const lastItem = processedBlocks[processedBlocks.length - 1];
+      if (lastItem && lastItem.type === 'paragraph') {
+        lastItem.content += ' ' + line;
+      } else {
+        processedBlocks.push({ type: 'paragraph', content: line });
+      }
+      i++;
     }
   });
-  return (<div className="space-y-8 text-slate-300">{processedBlocks.map((item, index) => { if (item.type === 'company_subheading') { return <motion.h2 initial={{ opacity: 0, y: -10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} key={index} className={`text-2xl md:text-3xl font-extrabold ${theme.text} mb-6`}>{item.content}</motion.h2>; } if (item.type === 'bullets') { const items = item.content.split(/\n|•/).filter(line => line.trim().length > 0); return (<motion.div key={index} initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="my-8"><div className="grid grid-cols-1 md:grid-cols-2 gap-6">{items.map((line, i) => (<motion.div key={i} whileHover={{ y: -5 }} className={`flex items-start gap-3 text-base text-slate-300 bg-slate-900/40 p-5 rounded-xl border border-white/5 shadow-lg group hover:border-pink-500/30`}><div className={`mt-1 p-1 rounded-full bg-white/5 ${theme.text}`}><CheckCircle2 className="w-4 h-4" /></div><span>{line.replace(/^-/, '').trim()}</span></motion.div>))}</div></motion.div>); } if (item.type === 'section_heading') { return <motion.h3 initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} key={index} className={`text-2xl font-extrabold ${theme.text} mt-14 mb-6`}>{item.content}</motion.h3>; } if (item.type === 'feature_card') { return (<motion.div key={index} initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className={`relative p-6 rounded-xl bg-gradient-to-br from-white/5 to-transparent border border-white/10 hover:border-pink-500/30 my-6`}><h4 className={`text-xl font-bold ${theme.text} mb-3`}>{item.heading}</h4><p className="text-slate-300/90">{item.content}</p></motion.div>); } return <motion.p initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} key={index} className="text-base text-slate-300/90">{item.content}</motion.p>; })})</div>);
-};
-
-const EntertainmentPage = () => {
-  const pageTitle = "Entertainment";
-  const pageCategory = "Industries";
-  const pageImage = "/img/Services/istockphoto-2170102692-612x612.jpg";
-  const pageDescription = "Transform entertainment with digital marketing";
-  const pageFullDescription = `Entertainment Digital Marketing – IHO Digital
-The entertainment industry needs digital presence to reach audiences. At IHO Digital, we provide entertainment digital marketing services.
-Why Digital Marketing Is Important for Entertainment
-Audiences discover movies, music, events, and shows online. Without digital presence, entertainment businesses miss out on fans.
-Our Entertainment Digital Solutions
-1. Entertainment Website Design
-We design professional websites for movies, music, and events.
-2. SEO for Entertainment
-We optimize for searches related to entertainment content.`;
-
-  const pageFeatures = ["Entertainment Websites", "Event Promotion", "Movie & Music Marketing", "Entertainment SEO"];
-
-  useEffect(() => { window.scrollTo(0, 0); }, []);
-  const fullText = pageFullDescription || "";
-  const allBlocks = fullText.split('\n\n');
-  let introBlocks = allBlocks.slice(0, 1);
-  let mainBodyBlocks = allBlocks.slice(1);
-
-  const openContactModal = () => { window.dispatchEvent(new CustomEvent('open-contact-modal')); const navbarFormTrigger = document.getElementById('open-contact-form-btn'); if (navbarFormTrigger) navbarFormTrigger.click(); };
 
   return (
-    <div className="min-h-screen bg-black text-slate-200 overflow-x-hidden">
+    <div className="space-y-6 text-slate-300 relative z-10 w-full">
+      {processedBlocks.map((item, index) => {
+        if (item.type === 'card_list') {
+          return (
+            <ul key={index} className="my-6 space-y-3 pl-4">
+              {item.items.map((listItem, idx) => (
+                <li key={idx} className="flex items-start gap-3">
+                  <CheckCircle2 className={`w-5 h-5 flex-shrink-0 mt-0.5 ${theme.text} drop-shadow-[0_0_8px_${theme.hex}]`} />
+                  <span className="text-base leading-relaxed text-slate-300">{listItem}</span>
+                </li>
+              ))}
+            </ul>
+          );
+        }
+        if (item.type === 'section_heading') {
+          return <h3 key={index} className={`text-2xl md:text-3xl font-extrabold ${theme.text} mt-12 mb-4 drop-shadow-[0_0_10px_rgba(217,70,239,0.4)]`}>{item.content}</h3>;
+        }
+        if (item.type === 'feature_card') {
+          return (
+            <div key={index} className="my-6 p-6 bg-white/5 border border-white/10 rounded-xl shadow-[0_0_20px_rgba(217,70,239,0.1)] backdrop-blur-md">
+              <h4 className={`text-xl font-bold ${theme.text} mb-2`}>{item.heading}</h4>
+              <p className="text-slate-300 leading-relaxed">{item.content}</p>
+            </div>
+          );
+        }
+        return (
+          <p key={index} className="text-lg leading-relaxed text-slate-300/90 text-justify md:text-left">
+            {item.content}
+          </p>
+        );
+      })}
+    </div>
+  );
+};
+
+// --- 4. MAIN PAGE COMPONENT ---
+const EntertainmentPage = () => {
+  const pageTitle = "Entertainment";
+  const pageCategory = "ENTERTAINMENT SOLUTIONS";
+  const pageDescription = "Engage audiences with entertainment platforms";
+
+  // Dropdown State
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsDropdownOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const pageFullDescription = `Digital Marketing Services for Entertainment Industry | IHO Digital
+The entertainment industry is highly competitive and constantly evolving in the digital world. From film production houses and music labels to influencers, event companies, YouTubers, and OTT platforms — strong online visibility is essential for success. IHO Digital offers specialized digital marketing solutions for entertainment businesses in Delhi NCR, Noida, and nearby locations. Our strategies help brands increase audience reach, build online presence, promote content, and maximize engagement across digital platforms.
+
+If you are searching for the best entertainment marketing agency near me, IHO Digital delivers creative, data-driven campaigns that help your brand grow faster.
+
+Why Digital Marketing is Important for Entertainment Brands:
+Today's audience consumes entertainment through social media, YouTube, OTT platforms, and search engines.
+
+Digital marketing helps entertainment businesses:
+
+- Promote movies, music, shows & events
+- Increase followers and fan engagement
+- Build strong personal & brand identity
+- Boost video views & content reach
+- Generate ticket sales & event leads
+- Improve online visibility in Delhi NCR & Noida
+
+With smart digital marketing strategies, entertainment brands can reach the right audience at the right time.
+
+Our Digital Marketing Services for Entertainment Industry:
+
+1. SEO Services for Entertainment Businesses
+Our SEO experts help entertainment brands rank higher on Google search results.
+- SEO for music artists & YouTubers
+- Film & production company SEO
+- Event promotion SEO
+- Local SEO for entertainment agencies
+- Keyword research & technical SEO
+- SEO audit & content optimization
+
+We help you rank for searches like "best event company near me," "music promotion agency Noida," and more.
+
+2. Social Media Marketing & Influencer Promotion
+Entertainment thrives on social media visibility. We create powerful social media strategies including:
+- Instagram & Reels marketing
+- Facebook & YouTube promotion
+- Influencer marketing campaigns
+- Viral content creation
+- Fan engagement & growth strategies
+- Celebrity & personal branding
+
+We help you build a strong online fan base and increase engagement.
+
+3. YouTube Marketing & Video Promotion
+Video content is the heart of the entertainment industry. Our YouTube marketing services include:
+- Channel SEO optimization
+- Video ranking strategies
+- Thumbnail & title optimization
+- YouTube Ads campaigns
+- Audience growth strategies
+- Music & entertainment video promotion
+
+We help creators and entertainment brands increase views, subscribers, and watch time.
+
+4. Google Ads & Paid Advertising
+Our targeted PPC campaigns help promote your entertainment content quickly.
+- Movie & event promotion campaigns
+- Music launch advertising
+- OTT & video promotion ads
+- Brand awareness campaigns
+- Local targeting for Delhi NCR audiences
+
+We design high-performance campaigns that maximize ROI.
+
+5. Branding & Online Reputation Management
+Brand image is everything in entertainment. We build strong brand identities through:
+- Digital PR & brand promotion
+- Artist & influencer branding
+- Entertainment brand storytelling
+- Online reputation management
+- Content & visual branding
+
+We help entertainment brands stand out in a competitive market.
+
+Why Choose IHO Digital for Entertainment Marketing?
+
+- Industry-specific digital marketing strategies
+- Local SEO expertise for Delhi NCR & Noida
+- Creative social media & video marketing team
+- Data-driven advertising campaigns
+- Strong influencer marketing network
+- Result-focused audience growth strategies
+
+We understand entertainment audiences and create campaigns that drive engagement and popularity.
+
+Entertainment Businesses We Serve:
+
+- Film Production Houses
+- Music Labels & Artists
+- Event Management Companies
+- YouTubers & Content Creators
+- OTT Platforms
+- Influencers & Celebrities
+- Media & Entertainment Agencies
+- Dance & Acting Academies
+
+Want to grow your entertainment brand online?
+Partner with IHO Digital – the best digital marketing agency for the entertainment industry in Delhi NCR & Noida. Let's promote your content, build your audience, and take your brand to the next level.`;
+
+  const pageFeatures = [
+    "Event Booking Platforms",
+    "Ticketing Systems",
+    "Streaming Websites",
+    "Entertainment Social Media Marketing"
+  ];
+
+  useEffect(() => { window.scrollTo(0, 0); }, []);
+  const allBlocks = pageFullDescription.split('\n\n');
+
+  const openContactModal = () => {
+    window.dispatchEvent(new CustomEvent('open-contact-modal'));
+    const navbarFormTrigger = document.getElementById('open-contact-form-btn');
+    if (navbarFormTrigger) navbarFormTrigger.click();
+  };
+
+  return (
+    <div className="min-h-screen bg-[#050510] text-slate-200 overflow-x-hidden relative font-sans selection:bg-fuchsia-500/30">
       <SEO title={`${pageTitle} - IHO Digital`} description={pageDescription} canonical="/industries/entertainment" />
-      <div className={`pt-28 pb-6 border-b border-white/5 bg-gradient-to-r ${theme.gradient}`}>
-        <div className="container mx-auto max-w-7xl px-6 flex items-center gap-2 text-sm opacity-80">
-          <Link to="/" className="hover:text-white flex items-center gap-1"><Home className="w-3.5 h-3.5" /> Home</Link>
-          <ChevronRight className="w-3.5 h-3.5" />
-          <Link to="/industries" className={`${theme.text}`}>{pageCategory}</Link>
-          <ChevronRight className="w-3.5 h-3.5" />
-          <span className="text-slate-200">{pageTitle}</span>
-        </div>
+
+      {/* --- 1. LIVE ANIMATED MERGE BACKGROUND --- */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
+        <div className="absolute inset-0 bg-gradient-to-br from-[#050510] via-[#090a15] to-[#050510]" />
+        <motion.div 
+          animate={{ x: [0, 40, -20, 0], y: [0, -40, 30, 0], scale: [1, 1.1, 0.9, 1] }} 
+          transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute top-[-5%] left-[10%] w-[700px] h-[700px] rounded-full blur-[140px] opacity-[0.2]" 
+          style={{ background: `radial-gradient(circle, #d946ef 0%, transparent 70%)`, mixBlendMode: 'screen' }} 
+        />
+        <motion.div 
+          animate={{ x: [0, -50, 40, 0], y: [0, 60, -20, 0], scale: [1, 0.95, 1.05, 1] }} 
+          transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute bottom-[10%] right-[0%] w-[800px] h-[800px] rounded-full blur-[160px] opacity-[0.15]" 
+          style={{ background: `radial-gradient(circle, #c026d3 0%, transparent 70%)`, mixBlendMode: 'screen' }} 
+        />
       </div>
 
-      <div className="bg-gradient-to-b from-slate-900 via-black to-slate-950 py-16">
-        <div className="container mx-auto max-w-7xl px-6">
-          <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="mb-8 flex justify-center">
-            <div className={`relative inline-flex items-center gap-3 px-6 py-3 rounded-full bg-white/5 backdrop-blur-xl border ${theme.border}`}>
-              <Film className={`${theme.text}`} />
-              <span className={`text-sm font-bold uppercase ${theme.text}`}>{pageCategory}</span>
+      {/* --- TOP HEADER (With Working Dropdown) --- */}
+      <div className="relative z-50 pt-28 pb-8 w-full max-w-7xl mx-auto px-6">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+          <Link to="/industries" className="flex items-center gap-4 group">
+            <div className="w-10 h-10 rounded-full border border-white/10 bg-white/5 flex items-center justify-center group-hover:bg-white/10 transition-colors">
+              <ArrowLeft className="w-4 h-4 text-slate-300" />
             </div>
-          </motion.div>
-          <div className="mb-16 text-center"><TiltHeading text={pageTitle} theme={theme} /></div>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start mb-16">
-            <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} className="text-lg text-slate-300"><ContentParser blocks={introBlocks} theme={theme} /></motion.div>
-            <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="relative w-full">
-              <div className={`p-3 rounded-2xl bg-gradient-to-br from-white/10 border border-white/5 shadow-2xl backdrop-blur-sm ${theme.glow}`}>
-                <div className="rounded-xl overflow-hidden aspect-video"><img src={pageImage} alt={pageTitle} className="w-full h-full object-cover" /></div>
+            <span className="text-xs font-bold tracking-[0.15em] text-slate-300 uppercase">Back to Industries</span>
+          </Link>
+
+          <div className="relative" ref={dropdownRef}>
+            <button 
+              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+              className="flex items-center gap-3 px-5 py-2.5 rounded-full border border-white/10 bg-[#1e1b4b]/40 hover:bg-[#1e1b4b]/60 transition-colors backdrop-blur-md"
+            >
+              <Grid className="w-4 h-4 text-slate-300" />
+              <span className="text-sm font-semibold text-slate-200">Switch Industry</span>
+              <ChevronDown className={`w-4 h-4 text-slate-400 ml-2 transition-transform duration-300 ${isDropdownOpen ? 'rotate-180' : ''}`} />
+            </button>
+
+            <motion.div 
+              initial={{ opacity: 0, y: -10, scale: 0.95 }}
+              animate={{ opacity: isDropdownOpen ? 1 : 0, y: isDropdownOpen ? 0 : -10, scale: isDropdownOpen ? 1 : 0.95 }}
+              transition={{ duration: 0.2 }}
+              className={`absolute right-0 mt-3 w-56 rounded-xl bg-[#0b0c16] border border-fuchsia-500/20 shadow-[0_15px_40px_-10px_rgba(217,70,239,0.5)] overflow-hidden z-50 ${isDropdownOpen ? 'pointer-events-auto' : 'pointer-events-none'}`}
+            >
+              <div className="py-2 flex flex-col bg-white/5 backdrop-blur-xl">
+                <Link to="/industries/healthcare" onClick={() => setIsDropdownOpen(false)} className="px-5 py-3 text-sm font-medium text-slate-300 hover:bg-fuchsia-500/10 hover:text-fuchsia-400 transition-colors border-l-2 border-transparent hover:border-fuchsia-500">Healthcare</Link>
+                <Link to="/industries/automotive" onClick={() => setIsDropdownOpen(false)} className="px-5 py-3 text-sm font-medium text-slate-300 hover:bg-fuchsia-500/10 hover:text-fuchsia-400 transition-colors border-l-2 border-transparent hover:border-fuchsia-500">Automotive</Link>
+                <Link to="/industries/real-estate" onClick={() => setIsDropdownOpen(false)} className="px-5 py-3 text-sm font-medium text-slate-300 hover:bg-fuchsia-500/10 hover:text-fuchsia-400 transition-colors border-l-2 border-transparent hover:border-fuchsia-500">Real Estate</Link>
+                <Link to="/industries/ecommerce" onClick={() => setIsDropdownOpen(false)} className="px-5 py-3 text-sm font-medium text-slate-300 hover:bg-fuchsia-500/10 hover:text-fuchsia-400 transition-colors border-l-2 border-transparent hover:border-fuchsia-500">E-Commerce</Link>
+                <Link to="/industries/technology" onClick={() => setIsDropdownOpen(false)} className="px-5 py-3 text-sm font-medium text-slate-300 hover:bg-fuchsia-500/10 hover:text-fuchsia-400 transition-colors border-l-2 border-transparent hover:border-fuchsia-500">Technology</Link>
               </div>
             </motion.div>
           </div>
-          <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}><ContentParser blocks={mainBodyBlocks} theme={theme} /></motion.div>
         </div>
       </div>
 
-      {pageFeatures.length > 0 && (<div className="bg-black py-20 border-t border-white/5"><div className="container mx-auto max-w-7xl px-6"><div className="text-center mb-14"><h3 className="text-3xl font-bold text-white mb-4">Key Features</h3><div className={`h-1.5 w-24 ${theme.accent} rounded-full mx-auto`} /></div><div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">{pageFeatures.map((feature, i) => (<div key={i} className="bg-white/5 border border-white/10 p-6 rounded-2xl"><CheckCircle2 className={`w-6 h-6 ${theme.text} mb-3`} /><span className="text-slate-300">{feature}</span></div>))}</div></div></div>)}
+      {/* --- 2. HERO SECTION --- */}
+      <div className="relative z-10 flex flex-col items-center justify-center text-center px-6 pt-6 pb-20">
+        <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+          <div className="inline-flex items-center gap-3 px-6 py-2 rounded-full border border-white/20 bg-white/5 backdrop-blur-md shadow-[0_0_20px_rgba(255,255,255,0.05)] mb-8">
+            <Sparkles className="w-4 h-4 text-fuchsia-400 drop-shadow-[0_0_8px_#e879f9]" />
+            <span className="text-xs font-bold uppercase tracking-[0.15em] text-white">{pageCategory}</span>
+          </div>
+        </motion.div>
 
-      <div className="py-24 bg-gradient-to-b from-slate-950 to-black border-y border-white/5">
-        <div className="container mx-auto max-w-7xl px-6 text-center">
-          <h2 className="text-4xl font-extrabold text-white mb-8">Ready to <span className={`text-transparent bg-clip-text bg-gradient-to-r ${theme.titleGradient}`}>Grow?</span></h2>
-          <button onClick={openContactModal} className={`px-10 py-4 ${theme.accent} text-white font-bold rounded-xl`}>Get Started</button>
+        <TiltHeading text={pageTitle} theme={theme} />
+
+        <motion.p 
+          initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.7, delay: 0.3 }}
+          className="text-xl md:text-2xl text-slate-300 font-light tracking-wide mt-6"
+        >
+          {pageDescription}
+        </motion.p>
+      </div>
+
+      {/* --- MAIN FULL WIDTH TEXT CONTENT --- */}
+      <div className="relative z-10 px-6 py-8">
+        <div className="max-w-5xl mx-auto bg-white/[0.02] border border-white/5 p-8 md:p-12 rounded-[2rem] shadow-[0_0_50px_rgba(0,0,0,0.3)] backdrop-blur-sm">
+          <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
+            <ContentParser blocks={allBlocks} theme={theme} />
+          </motion.div>
         </div>
       </div>
 
-      <div className="py-24 bg-black container mx-auto max-w-7xl px-6">
-        <h3 className="text-3xl font-bold text-white mb-10">More Industries</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          <Link to="/industries/healthcare" className="bg-slate-900/40 border border-white/5 rounded-2xl p-6"><h4 className="text-white font-bold mb-2">Healthcare</h4><p className="text-slate-400 text-sm">Modernize healthcare</p></Link>
-          <Link to="/industries/technology" className="bg-slate-900/40 border border-white/5 rounded-2xl p-6"><h4 className="text-white font-bold mb-2">Technology</h4><p className="text-slate-400 text-sm">Digital solutions</p></Link>
-          <Link to="/industries/education" className="bg-slate-900/40 border border-white/5 rounded-2xl p-6"><h4 className="text-white font-bold mb-2">Education</h4><p className="text-slate-400 text-sm">Learning solutions</p></Link>
-          <Link to="/industries/ecommerce" className="bg-slate-900/40 border border-white/5 rounded-2xl p-6"><h4 className="text-white font-bold mb-2">E-commerce</h4><p className="text-slate-400 text-sm">Online sales</p></Link>
+      {/* --- 3. THE TWO SPECIFIC BOTTOM CARDS --- */}
+      <div className="relative z-20 px-6 py-20 max-w-6xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
+          
+          {/* Card 1: Industry Leaders */}
+          <div className="bg-[#0b0c16] border border-white/5 rounded-[2rem] p-10 lg:p-14 flex flex-col items-center justify-center text-center shadow-[0_0_50px_-15px_rgba(217,70,239,0.5)] relative overflow-hidden group">
+            <div className="absolute inset-0 bg-gradient-to-br from-fuchsia-500/10 to-transparent opacity-80" />
+            
+            <div className="w-20 h-20 rounded-3xl bg-[#16182d] border border-fuchsia-500/20 flex items-center justify-center shadow-[0_0_30px_rgba(217,70,239,0.4)] mb-8 relative z-10 transition-transform duration-300 group-hover:scale-110">
+              <Rocket className="w-8 h-8 text-fuchsia-400 drop-shadow-[0_0_8px_#e879f9]" />
+            </div>
+            
+            <h3 className="text-3xl font-extrabold text-white mb-6 relative z-10 drop-shadow-md">Industry Leaders</h3>
+            <p className="text-slate-400 leading-relaxed max-w-sm relative z-10">
+              Specialized digital strategies designed to maximize growth in the Entertainment sector.
+            </p>
+          </div>
+
+          {/* Card 2: Key Solutions */}
+          <div className="bg-[#0b0c16] border border-white/5 rounded-[2rem] p-10 flex flex-col shadow-[0_0_50px_-15px_rgba(217,70,239,0.5)] relative overflow-hidden group">
+            <div className="absolute inset-0 bg-gradient-to-bl from-fuchsia-500/10 to-transparent opacity-80" />
+            
+            <div className="flex items-center gap-5 mb-8 relative z-10">
+              <div className="w-14 h-14 rounded-2xl bg-[#16182d] border border-fuchsia-500/20 flex items-center justify-center shadow-[0_0_20px_rgba(217,70,239,0.4)]">
+                <Star className="w-6 h-6 text-fuchsia-400 drop-shadow-[0_0_8px_#e879f9]" />
+              </div>
+              <h3 className="text-2xl font-extrabold text-white drop-shadow-md">Key Solutions</h3>
+            </div>
+            
+            <hr className="border-white/10 mb-8 relative z-10" />
+            
+            <div className="space-y-6 mb-10 flex-1 relative z-10">
+              {pageFeatures.map((feature, i) => (
+                <div key={i} className="flex items-center gap-4">
+                  <div className="w-6 h-6 rounded-full bg-fuchsia-500/10 flex items-center justify-center border border-fuchsia-500/30 shadow-[0_0_10px_rgba(217,70,239,0.2)]">
+                     <CheckCircle2 className="w-3.5 h-3.5 text-fuchsia-400" />
+                  </div>
+                  <span className="text-[15px] font-semibold text-slate-300">{feature}</span>
+                </div>
+              ))}
+            </div>
+            
+            <button 
+              onClick={openContactModal} 
+              className="w-full py-4 rounded-xl bg-[#d946ef] hover:bg-[#c026d3] text-white font-bold text-lg transition-colors shadow-[0_10px_30px_-10px_rgba(217,70,239,0.6)] relative z-10"
+            >
+              Get Custom Quote
+            </button>
+          </div>
+
         </div>
       </div>
+
     </div>
   );
 };
